@@ -4,15 +4,6 @@ import { BenefitsGrid } from "@/components/membership/benefits-grid";
 import { ProcessDiagram } from "@/components/membership/process-diagram";
 import { MembershipForm } from "@/components/membership/membership-form";
 import { CtaBanner } from "@/components/home/cta-banner";
-import {
-  Crown,
-  Sparkles,
-  Shield,
-  Clock,
-  Star,
-  HeartHandshake,
-} from "lucide-react";
-
 export const metadata: Metadata = {
   title: "Membership & Concierge",
   description:
@@ -24,37 +15,37 @@ const BENEFITS = [
     title: "Priority Access",
     description:
       "Skip the waitlist. Members receive first access to exclusive venues, events, and reservation windows before they open to the public.",
-    icon: Crown,
+    icon: "Crown",
   },
   {
     title: "Dedicated Concierge",
     description:
       "Your personal MICC liaison available around the clock. One point of contact who knows your preferences and anticipates your needs.",
-    icon: HeartHandshake,
+    icon: "HeartHandshake",
   },
   {
     title: "Curated Experiences",
     description:
       "Bespoke events and gatherings designed exclusively for members — from intimate tastings to private performances and VIP nightlife.",
-    icon: Sparkles,
+    icon: "Sparkles",
   },
   {
     title: "Preferred Pricing",
     description:
       "Members enjoy preferred rates on all MICC packages and priority scheduling for peak-season dates and high-demand venues.",
-    icon: Star,
+    icon: "Star",
   },
   {
     title: "Discretion Guaranteed",
     description:
       "Every interaction is handled with the utmost confidentiality. Your privacy is non-negotiable — it is foundational to how we operate.",
-    icon: Shield,
+    icon: "Shield",
   },
   {
     title: "24/7 Availability",
     description:
       "Last-minute change of plans? Need something at 2 AM? Your concierge team is always on, ensuring nothing falls through the cracks.",
-    icon: Clock,
+    icon: "Clock",
   },
 ];
 

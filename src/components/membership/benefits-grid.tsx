@@ -4,12 +4,29 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import type { LucideIcon } from "lucide-react";
+import {
+  Crown,
+  Sparkles,
+  Shield,
+  Clock,
+  Star,
+  HeartHandshake,
+  type LucideIcon,
+} from "lucide-react";
+
+const iconMap: Record<string, LucideIcon> = {
+  Crown,
+  Sparkles,
+  Shield,
+  Clock,
+  Star,
+  HeartHandshake,
+};
 
 export interface Benefit {
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: string;
 }
 
 interface BenefitsGridProps {
@@ -36,7 +53,7 @@ export function BenefitsGrid({
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {benefits.map((b, i) => {
-            const Icon = b.icon;
+            const Icon = iconMap[b.icon];
             return (
               <motion.div
                 key={b.title}
@@ -47,7 +64,7 @@ export function BenefitsGrid({
               >
                 <Card className="h-full" hover={false}>
                   <div className="w-12 h-12 mb-4 rounded-lg bg-gold/10 flex items-center justify-center">
-                    <Icon className="w-6 h-6 text-gold" />
+                    {Icon && <Icon className="w-6 h-6 text-gold" />}
                   </div>
                   <h3 className="font-display text-lg font-semibold mb-2">
                     {b.title}
