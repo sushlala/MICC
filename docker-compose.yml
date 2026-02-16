@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    # Supabase is managed via `supabase start` (CLI-managed containers).
+    # See https://supabase.com/docs/guides/local-development for setup.

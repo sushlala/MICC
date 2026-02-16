@@ -124,7 +124,7 @@ export default function AboutPage() {
             </p>
             <p className="text-dark-muted mb-8">Los Angeles, California</p>
             <Link href="/request">
-              <Button size="lg">Request Concierge</Button>
+              <Button size="lg">Request Curation</Button>
             </Link>
           </div>
         </Container>

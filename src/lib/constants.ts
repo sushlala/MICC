@@ -18,13 +18,13 @@ export type Pillar = {
 
 export const PILLARS: Pillar[] = [
   {
-    name: "Media & Marketing",
-    slug: "media-marketing",
-    tagline: "Tell Your Story Beautifully",
+    name: "Moments",
+    slug: "moments",
+    tagline: "Capture Every Unforgettable Instant",
     description:
-      "Professional content creation, social media management, and brand strategy for events and personal brands.",
+      "We immortalize your most meaningful experiences through cinematic storytelling, professional content creation, and strategic brand amplification.",
     longDescription:
-      "From cinematic event coverage to strategic brand campaigns, our Media & Marketing division captures and amplifies your narrative. We pair world-class creatives with data-driven strategy to ensure every piece of content elevates your presence.",
+      "Every extraordinary experience deserves to be remembered beautifully. Our Moments team captures the magic as it unfolds — pairing world-class creatives with data-driven strategy so every photograph, highlight reel, and campaign extends the life of your experience far beyond the night itself.",
     icon: Camera,
     services: [
       {
@@ -50,13 +50,13 @@ export const PILLARS: Pillar[] = [
     ],
   },
   {
-    name: "Illumination & Infrastructure",
-    slug: "illumination-infrastructure",
-    tagline: "Set the Scene",
+    name: "Immersion",
+    slug: "immersion",
+    tagline: "Step Into the Experience",
     description:
-      "Premium lighting design, sound engineering, and technical production for unforgettable atmospheres.",
+      "We transform any venue into a sensory world through premium lighting design, sound engineering, and technical production that envelops your guests.",
     longDescription:
-      "The atmosphere makes the experience. Our Illumination & Infrastructure team transforms any venue into an immersive environment with cutting-edge lighting, pristine sound, and seamless technical production that sets the mood for extraordinary moments.",
+      "The atmosphere makes the experience. Our Immersion team crafts multi-sensory environments that transport your guests the moment they walk in — with cutting-edge lighting, pristine sound, and seamless technical production designed to make every space feel like another world.",
     icon: Lightbulb,
     services: [
       {
@@ -82,13 +82,13 @@ export const PILLARS: Pillar[] = [
     ],
   },
   {
-    name: "Concierge",
-    slug: "concierge",
+    name: "Curation",
+    slug: "curation",
     tagline: "Your Wish, Handled",
     description:
-      "VIP access, reservations, travel coordination, and personal lifestyle management.",
+      "We handpick every detail of your lifestyle — VIP access, reservations, travel, and personal management — so your only job is to enjoy.",
     longDescription:
-      "True luxury is effortless. Our Concierge division handles every detail so you don't have to — from securing impossible reservations and VIP access to coordinating complex travel itineraries and managing your lifestyle needs with discretion and precision.",
+      "True luxury is effortless. Our Curation team personally selects and orchestrates every detail so you don't have to — from securing impossible reservations and VIP access to coordinating complex travel itineraries and managing your lifestyle needs with discretion and precision.",
     icon: Crown,
     services: [
       {
@@ -114,13 +114,13 @@ export const PILLARS: Pillar[] = [
     ],
   },
   {
-    name: "Creative Events",
-    slug: "creative-events",
+    name: "Celebration",
+    slug: "celebration",
     tagline: "Experiences Worth Remembering",
     description:
-      "Full-service event planning and production, from intimate dinners to large-scale celebrations.",
+      "We bring your vision to life — from intimate dinners to grand-scale productions — with meticulous planning and boundless creativity.",
     longDescription:
-      "Every gathering is an opportunity to create something unforgettable. Our Creative Events team conceptualizes, plans, and executes extraordinary experiences — from intimate dinner parties to large-scale celebrations — with meticulous attention to detail and boundless creativity.",
+      "Every gathering is an opportunity to create something unforgettable. Our Celebration team conceptualizes, plans, and executes extraordinary experiences — from intimate dinner parties to large-scale productions — with meticulous attention to detail and boundless creativity that turns any occasion into a landmark event.",
     icon: Sparkles,
     services: [
       {
@@ -198,7 +198,7 @@ export const SEED_PACKAGES: Package[] = [
     slug: "the-spotlight",
     description:
       "Full-service media coverage for your event — photography, videography, and a same-day highlight reel delivered before the night ends.",
-    pillar: "media-marketing",
+    pillar: "moments",
     base_price: 3500,
     inclusions: [
       "2 photographers",
@@ -217,7 +217,7 @@ export const SEED_PACKAGES: Package[] = [
     slug: "the-atmosphere",
     description:
       "Transform any venue with premium lighting and sound that sets the perfect mood for your event.",
-    pillar: "illumination-infrastructure",
+    pillar: "immersion",
     base_price: 5000,
     inclusions: [
       "Custom lighting design",
@@ -236,7 +236,7 @@ export const SEED_PACKAGES: Package[] = [
     slug: "the-insider",
     description:
       "Your personal key to the city — VIP reservations, priority access, and white-glove coordination for a flawless night.",
-    pillar: "concierge",
+    pillar: "curation",
     base_price: 2000,
     inclusions: [
       "VIP table reservations",
@@ -255,7 +255,7 @@ export const SEED_PACKAGES: Package[] = [
     slug: "the-grand-affair",
     description:
       "A fully produced celebration from concept to confetti — we handle every detail so you can simply enjoy the moment.",
-    pillar: "creative-events",
+    pillar: "celebration",
     base_price: 15000,
     inclusions: [
       "Full event concept & design",
@@ -274,7 +274,7 @@ export const SEED_PACKAGES: Package[] = [
     slug: "the-full-micc",
     description:
       "The ultimate luxury experience — every MICC pillar working in concert to deliver an evening that transcends expectations.",
-    pillar: "creative-events",
+    pillar: "celebration",
     base_price: 35000,
     inclusions: [
       "Full media coverage",
