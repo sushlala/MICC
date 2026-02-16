@@ -20,7 +20,7 @@ const HERO_IMAGES = [
 ];
 
 const HERO_CTAS = [
-  { label: "Request Concierge", href: "/request" },
+  { label: "Request Curation", href: "/request" },
   { label: "Explore Packages", href: "/packages", variant: "secondary" as const },
 ];
 
@@ -46,10 +46,10 @@ export default function HomePage() {
       name: "Los Angeles",
     },
     serviceType: [
-      "Event Production",
-      "Concierge Services",
-      "Media & Marketing",
-      "Lighting & Sound Design",
+      "Moments",
+      "Immersion",
+      "Curation",
+      "Celebration",
     ],
   };
 
@@ -80,7 +80,7 @@ export default function HomePage() {
       <CtaBanner
         heading="Ready to Elevate Your Night?"
         body="Tell us your vision and let MICC handle the rest. From concept to execution, we make the extraordinary effortless."
-        ctaLabel="Request Concierge"
+        ctaLabel="Request Curation"
         ctaHref="/request"
       />
     </>
