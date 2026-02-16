@@ -1,49 +1,149 @@
 @import "tailwindcss";
 
+/* ── TAILWIND v4 THEME ── */
 @theme inline {
-  --color-background: #0A0A0A;
-  --color-foreground: #FAFAFA;
-  --color-gold: #C9A84C;
-  --color-gold-light: #D4B85E;
-  --color-gold-dark: #B8953A;
-  --color-dark: #0A0A0A;
-  --color-dark-card: #141414;
-  --color-dark-border: #1E1E1E;
-  --color-dark-muted: #8A8A8A;
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-playfair-display);
+  --color-background: #0D1B2A;
+  --color-foreground: #F5F0E8;
+  --color-navy: #0D1B2A;
+  --color-charcoal: #2C3E50;
+  --color-beige: #C9A96E;
+  --color-cream: #F5F0E8;
+  --color-navy-80: rgba(13, 27, 42, 0.8);
+  --color-navy-60: rgba(13, 27, 42, 0.6);
+  --color-beige-20: rgba(201, 169, 110, 0.2);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-cormorant-garamond);
 }
 
-body {
-  background: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+/* ── COLOR TOKENS ── */
+:root {
+  --navy: #0D1B2A;
+  --charcoal: #2C3E50;
+  --beige: #C9A96E;
+  --cream: #F5F0E8;
+  --white: #FFFFFF;
+  --navy-80: rgba(13, 27, 42, 0.8);
+  --navy-60: rgba(13, 27, 42, 0.6);
+  --beige-20: rgba(201, 169, 110, 0.2);
+
+  /* ── SPACING ── */
+  --section-pad-desktop: 120px;
+  --section-pad-mobile: 60px;
+  --container-max: 1200px;
+  --container-pad: clamp(1.5rem, 5vw, 5rem);
 }
 
-::selection {
-  background-color: var(--color-gold);
-  color: var(--color-dark);
-}
-
-/* Smooth scrolling */
+/* ── BASE STYLES ── */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+body {
+  background: var(--navy);
+  color: var(--cream);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+::selection {
+  background-color: var(--beige);
+  color: var(--navy);
+}
+
+/* ── TYPOGRAPHY ── */
+h1, h2, h3 {
+  font-family: var(--font-display), serif;
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+}
+
+/* ── BUTTONS ── */
+.btn-primary {
+  background: var(--beige);
+  color: var(--navy);
+  padding: 14px 32px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(201, 169, 110, 0.4);
+}
+
+.btn-ghost {
+  border: 1px solid var(--beige);
+  color: var(--beige);
+  padding: 14px 32px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  background: transparent;
+  transition: all 0.2s ease;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  background: var(--beige-20);
+}
+
+/* ── SECTION VARIANTS ── */
+.section-dark {
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.section-mid {
+  background: var(--charcoal);
+  color: var(--cream);
+}
+
+.section-light {
+  background: var(--cream);
+  color: var(--navy);
+}
+
+/* ── SCROLLBAR ── */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-dark);
+  background: var(--navy);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-dark-border);
+  background: var(--charcoal);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gold);
+  background: var(--beige);
 }
