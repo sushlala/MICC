@@ -1,170 +1,195 @@
+"use client";
+
 import Link from "next/link";
 
-const SERVICES_LINKS = [
-  { label: "Concierge", href: "/concierge" },
-  { label: "Experiences", href: "/experiences" },
-  { label: "Packages", href: "/packages" },
-];
+const GOLD = "#D4AF37";
+const WARM = "#B89778";
+const OFF_WHITE = "#F5F5F5";
 
-const COMPANY_LINKS = [
-  { label: "About", href: "/about" },
-  { label: "Press", href: "#" },
-  { label: "Contact", href: "#" },
+const FOOTER_COLS = [
+  {
+    title: "Services",
+    links: [
+      { label: "Nightlife Access", href: "/experiences" },
+      { label: "Luxury Travel", href: "/packages" },
+      { label: "Event Production", href: "/packages" },
+      { label: "Content & Media", href: "/packages" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", href: "/about" },
+      { label: "Membership", href: "/membership" },
+      { label: "Partnerships", href: "#" },
+      { label: "Careers", href: "#" },
+    ],
+  },
+  {
+    title: "Connect",
+    links: [
+      { label: "Instagram", href: "https://instagram.com/micchospitality", external: true },
+      { label: "LinkedIn", href: "#" },
+      { label: "Contact", href: "/request" },
+      { label: "Press", href: "#" },
+    ],
+  },
 ];
-
-const SMS_HREF = "sms:+1XXXXXXXXXX";
 
 export function Footer() {
   return (
     <footer
-      className="border-t border-[rgba(201,169,110,0.2)]"
       style={{
-        background: "var(--navy)",
-        paddingTop: 80,
-        paddingBottom: 40,
+        background: "#000",
+        borderTop: "1px solid rgba(245,245,245,0.04)",
+        padding: "80px clamp(24px,5vw,80px) 40px",
       }}
     >
-      <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-pad)]">
-        {/* ── 4-Column Grid ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Col 1: Brand */}
-          <div>
-            <Link
-              href="/"
-              className="font-display text-[1.4rem] tracking-wider"
-              style={{ color: "var(--beige)" }}
+      {/* Top grid */}
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          display: "flex",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 48,
+          marginBottom: 64,
+        }}
+      >
+        {/* Brand */}
+        <div>
+          <Link href="/" style={{ textDecoration: "none" }}>
+            <div
+              className="font-display"
+              style={{
+                fontSize: 24,
+                fontWeight: 600,
+                color: GOLD,
+                letterSpacing: "0.2em",
+                marginBottom: 8,
+              }}
             >
               MICC
-            </Link>
-            <p
-              className="mt-4 text-[0.9rem] leading-relaxed"
-              style={{ color: "rgba(245, 240, 232, 0.7)" }}
-            >
-              One text. One team.
-              <br />
-              Unforgettable night.
-            </p>
+            </div>
+          </Link>
+          <div
+            className="font-sans"
+            style={{
+              fontSize: 11,
+              color: "rgba(245,245,245,0.35)",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+            }}
+          >
+            Hospitality
           </div>
-
-          {/* Col 2: Services */}
-          <div>
-            <h4
-              className="font-sans text-[0.75rem] font-semibold uppercase tracking-[0.15em] mb-5"
-              style={{ color: "var(--beige)" }}
-            >
-              Services
-            </h4>
-            <ul className="space-y-3">
-              {SERVICES_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-[0.85rem] transition-colors duration-200 hover:text-[var(--beige)]"
-                    style={{ color: "rgba(245, 240, 232, 0.6)" }}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Col 3: Company */}
-          <div>
-            <h4
-              className="font-sans text-[0.75rem] font-semibold uppercase tracking-[0.15em] mb-5"
-              style={{ color: "var(--beige)" }}
-            >
-              Company
-            </h4>
-            <ul className="space-y-3">
-              {COMPANY_LINKS.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-[0.85rem] transition-colors duration-200 hover:text-[var(--beige)]"
-                    style={{ color: "rgba(245, 240, 232, 0.6)" }}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Col 4: Get Started */}
-          <div>
-            <h4
-              className="font-sans text-[0.75rem] font-semibold uppercase tracking-[0.15em] mb-5"
-              style={{ color: "var(--beige)" }}
-            >
-              Get Started
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href={SMS_HREF}
-                  className="text-[0.85rem] transition-colors duration-200 hover:text-[var(--beige)]"
-                  style={{ color: "rgba(245, 240, 232, 0.6)" }}
-                >
-                  Text Us
-                </a>
-              </li>
-              <li>
-                <Link
-                  href="/request"
-                  className="text-[0.85rem] transition-colors duration-200 hover:text-[var(--beige)]"
-                  style={{ color: "rgba(245, 240, 232, 0.6)" }}
-                >
-                  Start a Request
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="https://instagram.com/micc"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[0.85rem] transition-colors duration-200 hover:text-[var(--beige)]"
-                  style={{ color: "rgba(245, 240, 232, 0.6)" }}
-                >
-                  {/* Instagram icon */}
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="2" y="2" width="20" height="20" rx="5" />
-                    <circle cx="12" cy="12" r="5" />
-                    <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
-                  </svg>
-                  @micc
-                </a>
-              </li>
-            </ul>
-          </div>
+          <p
+            className="font-sans"
+            style={{
+              fontSize: 13,
+              color: "rgba(245,245,245,0.3)",
+              maxWidth: 280,
+              marginTop: 16,
+              lineHeight: 1.7,
+            }}
+          >
+            Curated luxury for those who refuse the ordinary.
+          </p>
         </div>
 
-        {/* ── Bottom Bar ── */}
-        <div
-          className="mt-16 pt-6 border-t border-[rgba(201,169,110,0.1)] flex flex-col sm:flex-row items-center justify-between gap-3"
-          style={{ color: "rgba(245, 240, 232, 0.5)" }}
+        {/* Link columns */}
+        <div style={{ display: "flex", gap: "clamp(32px, 6vw, 64px)", flexWrap: "wrap" }}>
+          {FOOTER_COLS.map((col) => (
+            <div key={col.title}>
+              <div
+                className="font-sans"
+                style={{
+                  fontSize: 10,
+                  fontWeight: 500,
+                  letterSpacing: "0.3em",
+                  color: GOLD,
+                  textTransform: "uppercase",
+                  marginBottom: 20,
+                }}
+              >
+                {col.title}
+              </div>
+              {col.links.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  target={"external" in link && link.external ? "_blank" : undefined}
+                  rel={"external" in link && link.external ? "noopener noreferrer" : undefined}
+                  style={{
+                    display: "block",
+                    fontFamily: "var(--font-sans)",
+                    fontSize: 13,
+                    fontWeight: 300,
+                    color: "rgba(245,245,245,0.4)",
+                    textDecoration: "none",
+                    marginBottom: 12,
+                    transition: "color 0.3s",
+                  }}
+                  onMouseEnter={(e) =>
+                    ((e.target as HTMLElement).style.color = OFF_WHITE)
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.target as HTMLElement).style.color = "rgba(245,245,245,0.4)")
+                  }
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          height: 1,
+          background: `linear-gradient(90deg, transparent, ${WARM}, transparent)`,
+          opacity: 0.3,
+        }}
+      />
+
+      {/* Bottom bar */}
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "32px auto 0",
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+        }}
+      >
+        <p
+          className="font-sans"
+          style={{ fontSize: 11, color: "rgba(245,245,245,0.2)", letterSpacing: "0.05em" }}
         >
-          <p className="font-sans text-[0.75rem]">
-            &copy; 2026 MICC LLC
-          </p>
-          <div className="flex items-center gap-4 font-sans text-[0.75rem]">
-            <Link href="#" className="hover:text-[var(--beige)] transition-colors duration-200">
-              Privacy
+          &copy; 2026 MICC Hospitality. All rights reserved.
+        </p>
+        <div className="flex items-center gap-4">
+          {["Privacy", "Terms"].map((label) => (
+            <Link
+              key={label}
+              href="#"
+              className="font-sans text-[11px] transition-colors duration-200"
+              style={{ color: "rgba(245,245,245,0.2)", textDecoration: "none" }}
+              onMouseEnter={(e) => ((e.target as HTMLElement).style.color = GOLD)}
+              onMouseLeave={(e) =>
+                ((e.target as HTMLElement).style.color = "rgba(245,245,245,0.2)")
+              }
+            >
+              {label}
             </Link>
-            <Link href="#" className="hover:text-[var(--beige)] transition-colors duration-200">
-              Terms
-            </Link>
-          </div>
+          ))}
         </div>
       </div>
     </footer>

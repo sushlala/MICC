@@ -26,6 +26,13 @@
   --navy-60: rgba(13, 27, 42, 0.6);
   --beige-20: rgba(201, 169, 110, 0.2);
 
+  /* New design tokens */
+  --gold: #D4AF37;
+  --warm: #B89778;
+  --off-white: #F5F5F5;
+  --dark: #000000;
+  --dark-card: rgba(26, 26, 26, 0.65);
+
   /* ── SPACING ── */
   --section-pad-desktop: 120px;
   --section-pad-mobile: 60px;
@@ -39,8 +46,8 @@ html {
 }
 
 body {
-  background: var(--navy);
-  color: var(--cream);
+  background: #000;
+  color: var(--off-white, var(--cream));
   font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 300;
