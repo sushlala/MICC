@@ -10,19 +10,19 @@ const FOOTER_COLS = [
   {
     title: "Services",
     links: [
-      { label: "Nightlife Access", href: "/experiences" },
-      { label: "Luxury Travel", href: "/packages" },
-      { label: "Event Production", href: "/packages" },
-      { label: "Content & Media", href: "/packages" },
+      { label: "Hotels & Accommodations", href: "/services/hotels-accommodations" },
+      { label: "Dining Reservations", href: "/services/dining-reservations" },
+      { label: "Nightlife & VIP Tables", href: "/services/nightlife-vip-tables" },
+      { label: "All Services", href: "/services" },
     ],
   },
   {
     title: "Company",
     links: [
       { label: "About", href: "/about" },
+      { label: "How It Works", href: "/how-it-works" },
       { label: "Membership", href: "/membership" },
-      { label: "Partnerships", href: "#" },
-      { label: "Careers", href: "#" },
+      { label: "FAQ", href: "/faq" },
     ],
   },
   {
@@ -30,7 +30,7 @@ const FOOTER_COLS = [
     links: [
       { label: "Instagram", href: "https://instagram.com/micchospitality", external: true },
       { label: "LinkedIn", href: "#" },
-      { label: "Contact", href: "/request" },
+      { label: "Contact", href: "/start" },
       { label: "Press", href: "#" },
     ],
   },
@@ -94,7 +94,8 @@ export function Footer() {
               lineHeight: 1.7,
             }}
           >
-            Curated luxury for those who refuse the ordinary.
+            Private concierge for Chicago — one point of contact for hotels,
+            dining, nightlife, transportation and every detail in between.
           </p>
         </div>
 

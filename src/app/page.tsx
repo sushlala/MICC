@@ -2,14 +2,16 @@
 
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { EXPERIENCES, NEIGHBORHOODS, SERVICES } from "@/lib/constants";
+import { PhotoCtaBand } from "@/components/layout/photo-cta-band";
 
 // ─── Color tokens ───
-const GOLD = "#D4AF37";
+const GOLD = "#E0C38E";
 const WARM = "#B89778";
-const OFF_WHITE = "#F5F5F5";
-const CHARCOAL = "#1A1A1A";
-const BLACK = "#000000";
-const DARK_CARD = "rgba(26,26,26,0.65)";
+const OFF_WHITE = "#EFEEEB";
+const BLACK = "#040405";
 
 const serif = "var(--font-display), 'Playfair Display', Georgia, serif";
 const sans = "var(--font-sans), 'Outfit', 'Helvetica Neue', sans-serif";
@@ -132,7 +134,7 @@ function GoldButton({
 }
 
 // ─── Hero ───
-function Hero({ onInquiry }: { onInquiry: () => void }) {
+function Hero() {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 200);
@@ -145,34 +147,26 @@ function Hero({ onInquiry }: { onInquiry: () => void }) {
         position: "relative",
         minHeight: "calc(100vh - 72px)",
         overflow: "hidden",
-        background: `linear-gradient(135deg, ${BLACK} 0%, #0a0a0a 40%, #111 100%)`,
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
       }}
     >
-      {/* Ambient glow */}
-      <div
-        style={{
-          position: "absolute",
-          top: "20%",
-          left: "50%",
-          width: "120vw",
-          height: "80vh",
-          transform: "translateX(-50%)",
-          background: `radial-gradient(ellipse at center, rgba(212,175,55,0.05) 0%, transparent 70%)`,
-          pointerEvents: "none",
-        }}
+      {/* Background photo */}
+      <Image
+        src="https://images.unsplash.com/photo-1600739275840-17466822434d?q=80&w=2400&auto=format&fit=crop"
+        alt="Chicago skyline above the Chicago River after dark"
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectFit: "cover", zIndex: 0 }}
       />
-      {/* Subtle grid */}
+      {/* Dark overlay for legibility */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          opacity: 0.03,
-          backgroundImage: `linear-gradient(rgba(212,175,55,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.3) 1px, transparent 1px)`,
-          backgroundSize: "80px 80px",
-          pointerEvents: "none",
+          zIndex: 1,
+          background: `linear-gradient(to top, ${BLACK} 2%, rgba(4,4,5,0.85) 28%, rgba(4,4,5,0.35) 62%, rgba(4,4,5,0.55) 100%)`,
         }}
       />
 
@@ -180,136 +174,157 @@ function Hero({ onInquiry }: { onInquiry: () => void }) {
         style={{
           position: "relative",
           zIndex: 2,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: "80px 24px",
-          textAlign: "center",
+          width: "100%",
+          maxWidth: "var(--container-max)",
+          margin: "0 auto",
+          padding: "80px var(--container-pad)",
         }}
       >
-        {/* Eyebrow */}
-        <div
-          style={{
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(24px)",
-            transition: "all 1.2s cubic-bezier(.23,1,.32,1) 0.3s",
-          }}
-        >
+        <div style={{ maxWidth: 620 }}>
+          {/* Eyebrow */}
           <div
             style={{
-              fontFamily: sans,
-              fontSize: 11,
-              fontWeight: 300,
-              letterSpacing: 6,
-              color: GOLD,
-              textTransform: "uppercase",
-              marginBottom: 32,
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(24px)",
+              transition: "all 1.2s cubic-bezier(.23,1,.32,1) 0.3s",
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              marginBottom: 28,
             }}
           >
-            Curated Luxury, On Demand
+            <div style={{ width: 32, height: 1, background: GOLD }} />
+            <span
+              style={{
+                fontFamily: sans,
+                fontSize: 11,
+                fontWeight: 400,
+                letterSpacing: 4,
+                color: GOLD,
+                textTransform: "uppercase",
+              }}
+            >
+              Private Concierge · Chicago
+            </span>
           </div>
-        </div>
 
-        {/* Headline */}
-        <div
-          style={{
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(30px)",
-            transition: "all 1.2s cubic-bezier(.23,1,.32,1) 0.6s",
-          }}
-        >
-          <h1
+          {/* Headline */}
+          <div
             style={{
-              fontFamily: serif,
-              fontSize: "clamp(42px, 7vw, 96px)",
-              fontWeight: 400,
-              color: OFF_WHITE,
-              lineHeight: 1.05,
-              margin: 0,
-              letterSpacing: -1,
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(30px)",
+              transition: "all 1.2s cubic-bezier(.23,1,.32,1) 0.6s",
             }}
           >
-            Your World,
-            <br />
-            <span style={{ fontStyle: "italic", color: GOLD }}>Elevated</span>
-          </h1>
-        </div>
+            <h1
+              style={{
+                fontFamily: serif,
+                fontSize: "clamp(42px, 7vw, 96px)",
+                fontWeight: 300,
+                color: OFF_WHITE,
+                lineHeight: 1.05,
+                margin: 0,
+                letterSpacing: -1,
+              }}
+            >
+              Chicago,
+              <br />
+              Handled.
+            </h1>
+          </div>
 
-        {/* Subtext */}
-        <div
-          style={{
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(20px)",
-            transition: "all 1.2s cubic-bezier(.23,1,.32,1) 0.9s",
-          }}
-        >
-          <p
+          {/* Subtext */}
+          <div
             style={{
-              fontFamily: sans,
-              fontSize: 16,
-              fontWeight: 300,
-              color: "rgba(245,245,245,0.55)",
-              maxWidth: 520,
-              margin: "32px auto 48px",
-              lineHeight: 1.7,
-              letterSpacing: 0.5,
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1.2s cubic-bezier(.23,1,.32,1) 0.9s",
             }}
           >
-            Exclusive nightlife access. Luxury travel. Bespoke event production.
-            One concierge for every elevated experience.
-          </p>
-        </div>
+            <p
+              style={{
+                fontFamily: sans,
+                fontSize: 16,
+                fontWeight: 300,
+                color: "rgba(239,238,235,0.7)",
+                maxWidth: 480,
+                margin: "28px 0 40px",
+                lineHeight: 1.7,
+                letterSpacing: 0.3,
+              }}
+            >
+              From reservations and accommodations to nightlife, transportation
+              and private experiences, MICC Hospitality plans every detail of
+              your time in Chicago.
+            </p>
+          </div>
 
-        {/* CTAs */}
-        <div
-          style={{
-            opacity: loaded ? 1 : 0,
-            transition: "opacity 1.2s cubic-bezier(.23,1,.32,1) 1.2s",
-            display: "flex",
-            gap: 20,
-            flexWrap: "wrap",
-            justifyContent: "center",
-          }}
-        >
-          <GoldButton onClick={onInquiry}>Request Access</GoldButton>
-          <GoldButton
-            href="#experiences"
-            style={{ borderColor: "rgba(245,245,245,0.2)", color: "rgba(245,245,245,0.7)" }}
+          {/* CTAs */}
+          <div
+            style={{
+              opacity: loaded ? 1 : 0,
+              transition: "opacity 1.2s cubic-bezier(.23,1,.32,1) 1.2s",
+              display: "flex",
+              gap: 16,
+              flexWrap: "wrap",
+            }}
           >
-            Explore Experiences
-          </GoldButton>
+            <GoldButton filled href="/start">Plan Your Experience</GoldButton>
+            <GoldButton
+              href="/experiences"
+              style={{ borderColor: "rgba(255,255,255,0.12)", color: OFF_WHITE }}
+            >
+              Explore Our Services
+            </GoldButton>
+          </div>
         </div>
       </div>
 
-      {/* Bottom fade */}
+      {/* Coordinates + photo credit */}
       <div
         style={{
           position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 180,
-          background: `linear-gradient(transparent, ${BLACK})`,
-          pointerEvents: "none",
+          bottom: 24,
+          right: "var(--container-pad)",
+          zIndex: 2,
+          textAlign: "right",
+          opacity: loaded ? 0.6 : 0,
+          transition: "opacity 1.5s ease 1.5s",
         }}
-      />
+      >
+        <div style={{ fontFamily: sans, fontSize: 11, letterSpacing: 1, color: OFF_WHITE }}>
+          41.8781° N · 87.6298° W
+        </div>
+        <div
+          style={{
+            fontFamily: sans,
+            fontSize: 9,
+            letterSpacing: 1,
+            color: "rgba(239,238,235,0.5)",
+            marginTop: 2,
+          }}
+        >
+          PHOTO MANA5280 / UNSPLASH
+        </div>
+      </div>
 
       {/* Scroll indicator */}
       <div
         style={{
           position: "absolute",
-          bottom: 40,
+          bottom: 24,
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           gap: 8,
+          zIndex: 2,
           opacity: loaded ? 0.4 : 0,
           transition: "opacity 1.5s ease 1.8s",
         }}
       >
-        <div style={{ width: 1, height: 40, background: `linear-gradient(transparent, ${GOLD})` }} />
+        <div style={{ width: 1, height: 32, background: `linear-gradient(transparent, ${GOLD})` }} />
         <span
           style={{
             fontFamily: sans,
@@ -327,44 +342,28 @@ function Hero({ onInquiry }: { onInquiry: () => void }) {
 }
 
 // ─── Experiences ───
-const experiences = [
-  {
-    title: "Nightlife Access",
-    sub: "VIP Tables & Bottle Service",
-    desc: "Skip the line. Own the room. Exclusive reservations at the most sought-after venues worldwide.",
-    icon: "★",
-  },
-  {
-    title: "Luxury Travel",
-    sub: "Private Jets & Curated Stays",
-    desc: "From penthouse suites to private islands — travel designed for those who expect the extraordinary.",
-    icon: "✦",
-  },
-  {
-    title: "Event Production",
-    sub: "Bespoke Experiences",
-    desc: "Immersive events crafted with cinematic precision. Lighting, sound, and atmosphere perfected.",
-    icon: "◆",
-  },
-  {
-    title: "Content & Media",
-    sub: "Premium Visual Storytelling",
-    desc: "Elevate your brand with luxury-grade photography, videography, and creative direction.",
-    icon: "▲",
-  },
-  {
-    title: "Lighting & Sound",
-    sub: "Immersive Atmosphere Design",
-    desc: "Transform any space into a sensory world. Custom lighting installations and pristine audio engineering for unforgettable ambiance.",
-    icon: "◈",
-  },
-  {
-    title: "Lifestyle Management",
-    sub: "Personal Concierge Services",
-    desc: "One dedicated point of contact for every need. Reservations, personal shopping, logistics — handled with precision and absolute discretion.",
-    icon: "⬡",
-  },
-];
+const EXPERIENCE_PHOTOS: Record<string, string> = {
+  "bachelor-bachelorette-weekends":
+    "https://images.unsplash.com/photo-1758165532022-a68f291317ba",
+  "luxury-chicago-getaways":
+    "https://images.unsplash.com/photo-1633822059802-079a9eb92498",
+  "birthdays-celebrations":
+    "https://images.unsplash.com/photo-1774509625509-8c452b51649e",
+  "corporate-hospitality":
+    "https://images.unsplash.com/photo-1779745227145-67d965135660",
+  "nightlife-vip-access":
+    "https://images.unsplash.com/photo-1756981168649-0e3c3c8a32f3",
+  "custom-group-experiences":
+    "https://images.unsplash.com/photo-1774550010075-af560fe7f732",
+};
+
+const experiences = EXPERIENCES.map((e) => ({
+  slug: e.slug,
+  title: e.name,
+  sub: e.tagline,
+  desc: e.description,
+  photo: EXPERIENCE_PHOTOS[e.slug],
+}));
 
 function ExperienceCard({
   item,
@@ -376,128 +375,123 @@ function ExperienceCard({
   const [hov, setHov] = useState(false);
   return (
     <FadeSection delay={index * 0.12}>
-      <div
+      <Link
+        href={`/experiences/${item.slug}`}
         onMouseEnter={() => setHov(true)}
         onMouseLeave={() => setHov(false)}
         style={{
-          background: hov ? "rgba(212,175,55,0.06)" : DARK_CARD,
-          border: `1px solid ${hov ? "rgba(212,175,55,0.3)" : "rgba(245,245,245,0.06)"}`,
-          backdropFilter: "blur(20px)",
-          padding: "48px 36px",
-          transition: "all 0.5s cubic-bezier(.23,1,.32,1)",
-          cursor: "pointer",
+          display: "block",
+          textDecoration: "none",
           position: "relative",
           overflow: "hidden",
-          height: "100%",
+          height: 420,
+          border: `1px solid ${hov ? "rgba(224,195,142,0.35)" : "rgba(255,255,255,0.08)"}`,
         }}
       >
-        {/* Corner accent */}
-        <div
+        <Image
+          src={`${item.photo}?q=75&w=900&auto=format&fit=crop`}
+          alt={item.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
           style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            width: hov ? 60 : 40,
-            height: hov ? 60 : 40,
-            borderTop: `1px solid ${GOLD}`,
-            borderRight: `1px solid ${GOLD}`,
-            transition: "all 0.5s ease",
-            opacity: hov ? 0.8 : 0.3,
+            objectFit: "cover",
+            transition: "transform 0.6s cubic-bezier(.23,1,.32,1)",
+            transform: hov ? "scale(1.06)" : "scale(1)",
           }}
         />
         <div
-          style={{ fontFamily: serif, fontSize: 28, color: GOLD, marginBottom: 20, opacity: 0.7 }}
-        >
-          {item.icon}
-        </div>
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: `linear-gradient(to top, ${BLACK} 8%, rgba(4,4,5,0.55) 45%, rgba(4,4,5,0.15) 75%)`,
+          }}
+        />
         <div
           style={{
-            fontFamily: sans,
-            fontSize: 10,
-            fontWeight: 400,
-            letterSpacing: 3,
-            color: WARM,
-            textTransform: "uppercase",
-            marginBottom: 8,
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            padding: "28px 28px 32px",
           }}
         >
-          {item.sub}
-        </div>
-        <h3
-          style={{
-            fontFamily: serif,
-            fontSize: 26,
-            fontWeight: 500,
-            color: OFF_WHITE,
-            margin: "0 0 16px",
-            letterSpacing: 0.5,
-          }}
-        >
-          {item.title}
-        </h3>
-        <p
-          style={{
-            fontFamily: sans,
-            fontSize: 14,
-            fontWeight: 300,
-            color: "rgba(245,245,245,0.5)",
-            lineHeight: 1.7,
-            margin: 0,
-          }}
-        >
-          {item.desc}
-        </p>
-        <div
-          style={{
-            marginTop: 28,
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            color: GOLD,
-            fontFamily: sans,
-            fontSize: 11,
-            letterSpacing: 2,
-            textTransform: "uppercase",
-            opacity: hov ? 1 : 0.5,
-            transition: "opacity 0.4s",
-          }}
-        >
-          <span>Discover</span>
-          <span
+          <div
             style={{
-              transform: hov ? "translateX(4px)" : "translateX(0)",
-              transition: "transform 0.3s",
+              fontFamily: sans,
+              fontSize: 10,
+              fontWeight: 400,
+              letterSpacing: 3,
+              color: GOLD,
+              textTransform: "uppercase",
+              marginBottom: 10,
             }}
           >
-            →
-          </span>
+            {item.sub}
+          </div>
+          <h3
+            style={{
+              fontFamily: serif,
+              fontSize: 24,
+              fontWeight: 400,
+              color: OFF_WHITE,
+              margin: "0 0 14px",
+              letterSpacing: 0.3,
+              lineHeight: 1.15,
+            }}
+          >
+            {item.title}
+          </h3>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              color: GOLD,
+              fontFamily: sans,
+              fontSize: 11,
+              letterSpacing: 2,
+              textTransform: "uppercase",
+              opacity: hov ? 1 : 0.7,
+              transition: "opacity 0.4s",
+            }}
+          >
+            <span>View Experience</span>
+            <span
+              style={{
+                transform: hov ? "translateX(4px)" : "translateX(0)",
+                transition: "transform 0.3s",
+              }}
+            >
+              →
+            </span>
+          </div>
         </div>
-      </div>
+      </Link>
     </FadeSection>
   );
 }
 
-// ─── Pillars ───
+// ─── Why MICC ───
 const pillars = [
   {
     num: "01",
-    title: "Access",
-    desc: "Doors open that others don't know exist. The most exclusive venues, tables, and experiences — curated and confirmed.",
+    title: "Chicago Access",
+    desc: "Relationships throughout the city help create opportunities that ordinary booking platforms cannot.",
   },
   {
     num: "02",
-    title: "Production",
-    desc: "Every detail orchestrated. Lighting. Sound. Atmosphere. We don't plan events — we engineer moments.",
+    title: "One Point of Contact",
+    desc: "Instead of coordinating multiple venues, reservations, drivers and schedules, you communicate with one concierge team.",
   },
   {
     num: "03",
-    title: "Media",
-    desc: "Your story told through a luxury lens. Content creation, creative direction, and visual identity that commands attention.",
+    title: "Built Around You",
+    desc: "Every itinerary is customized around your group, preferences, budget and reason for visiting.",
   },
   {
     num: "04",
-    title: "Concierge",
-    desc: "One point of contact for everything. Travel, reservations, logistics — handled with precision and discretion.",
+    title: "Handled Start to Finish",
+    desc: "We manage the planning, coordination, confirmations and the details that are easy to overlook.",
   },
 ];
 
@@ -594,9 +588,9 @@ function StatBar() {
         }}
       >
         {[
-          { val: "500+", label: "Exclusive Events" },
-          { val: "12", label: "Major Cities" },
-          { val: "100%", label: "Invitation Only" },
+          { val: "7", label: "Chicago Neighborhoods" },
+          { val: "100%", label: "Custom Itineraries" },
+          { val: "1", label: "Point of Contact" },
           { val: "24/7", label: "Concierge Access" },
         ].map((s, i) => (
           <div key={i} style={{ textAlign: "center" }}>
@@ -635,20 +629,18 @@ function StatBar() {
 const testimonials = [
   {
     quote:
-      "MICC turned our product launch into an experience people are still talking about. The attention to detail was otherworldly.",
-    name: "Alexis R.",
-    role: "Brand Director",
+      "MICC handled every reservation, every ride, and every change throughout the weekend. We were able to enjoy Chicago without worrying about the planning.",
+    role: "Placeholder — Group Weekend",
   },
   {
     quote:
-      "I've worked with concierge services globally. MICC operates at a different altitude entirely.",
-    name: "James T.",
-    role: "Private Client",
+      "One person to call for the entire trip. Dinners, transportation and timing were all confirmed before we landed.",
+    role: "Placeholder — Corporate Visit",
   },
   {
-    quote: "From the venue to the lighting to the guest list — flawless. They don't miss.",
-    name: "Priya K.",
-    role: "Event Planner",
+    quote:
+      "The itinerary was built around what our group actually wanted, and adjustments were handled quickly.",
+    role: "Placeholder — Celebration Weekend",
   },
 ];
 
@@ -700,23 +692,11 @@ function Testimonials() {
         <div
           style={{
             fontFamily: sans,
-            fontSize: 12,
-            fontWeight: 500,
-            letterSpacing: 2,
-            color: GOLD,
-            textTransform: "uppercase",
-          }}
-        >
-          {t.name}
-        </div>
-        <div
-          style={{
-            fontFamily: sans,
             fontSize: 11,
             fontWeight: 300,
             color: "rgba(245,245,245,0.35)",
-            marginTop: 4,
-            letterSpacing: 1,
+            letterSpacing: 2,
+            textTransform: "uppercase",
           }}
         >
           {t.role}
@@ -738,6 +718,18 @@ function Testimonials() {
             />
           ))}
         </div>
+        <p
+          style={{
+            fontFamily: sans,
+            fontSize: 11,
+            fontWeight: 300,
+            color: "rgba(245,245,245,0.25)",
+            marginTop: 28,
+          }}
+        >
+          Placeholder testimonials shown for layout purposes. Verified
+          client feedback will replace these prior to launch.
+        </p>
       </div>
       <style>{`@keyframes fadeQuote { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }`}</style>
     </FadeSection>
@@ -779,9 +771,9 @@ function MembershipCTA() {
             lineHeight: 1.15,
           }}
         >
-          The Inner Circle
+          Your Chicago Concierge,
           <br />
-          <span style={{ color: GOLD, fontStyle: "italic" }}>Awaits</span>
+          <span style={{ color: GOLD, fontStyle: "italic" }}>On Retainer</span>
         </h2>
         <p
           style={{
@@ -794,8 +786,8 @@ function MembershipCTA() {
             lineHeight: 1.7,
           }}
         >
-          Priority access. Dedicated concierge. Invitations to events the world never sees.
-          Membership is by application only.
+          For guests who visit Chicago often — priority access, a dedicated
+          concierge who already knows you, and preferred rates on every trip.
         </p>
         <GoldButton filled href="/membership">
           Apply for Membership
@@ -805,146 +797,432 @@ function MembershipCTA() {
   );
 }
 
-// ─── Inquiry Modal ───
-function InquiryModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  if (!open) return null;
+// ─── Experience Builder ───
+const BUILDER_GROUP_SIZES = ["2 guests", "4–6", "8–12", "12–20", "20+"];
+
+function ExperienceBuilder() {
+  const router = useRouter();
+  const [occasion, setOccasion] = useState(EXPERIENCES[0].slug);
+  const [size, setSize] = useState(BUILDER_GROUP_SIZES[1]);
+  const [focus, setFocus] = useState<string[]>([SERVICES[0].slug]);
+
+  function toggleFocus(slug: string) {
+    setFocus((prev) =>
+      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
+    );
+  }
+
+  const occasionName = EXPERIENCES.find((e) => e.slug === occasion)?.name ?? "";
+  const focusNames = SERVICES.filter((s) => focus.includes(s.slug)).map((s) => s.name);
+
+  const pillStyle = (active: boolean): React.CSSProperties => ({
+    padding: "10px 16px",
+    fontFamily: sans,
+    fontSize: 12,
+    letterSpacing: 0.5,
+    color: active ? BLACK : "rgba(239,238,235,0.65)",
+    background: active ? GOLD : "transparent",
+    border: `1px solid ${active ? GOLD : "rgba(255,255,255,0.14)"}`,
+    cursor: "pointer",
+    transition: "all 0.25s ease",
+    textAlign: "left",
+  });
+
   return (
-    <div
-      onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 300,
-        background: "rgba(0,0,0,0.85)",
-        backdropFilter: "blur(20px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        animation: "fadeIn 0.4s ease",
-        padding: "24px",
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          background: CHARCOAL,
-          border: `1px solid rgba(212,175,55,0.15)`,
-          padding: "clamp(32px, 5vw, 56px) clamp(24px, 5vw, 48px)",
-          width: "100%",
-          maxWidth: 480,
-        }}
-      >
-        <div
-          style={{
-            fontFamily: sans,
-            fontSize: 10,
-            letterSpacing: 4,
-            color: GOLD,
-            textTransform: "uppercase",
-            marginBottom: 12,
-          }}
-        >
-          Private Inquiry
+    <section style={{ padding: "120px clamp(24px,5vw,80px)", maxWidth: 1200, margin: "0 auto" }}>
+      <FadeSection>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
+          <span
+            style={{
+              fontFamily: sans,
+              fontSize: 10,
+              fontWeight: 400,
+              letterSpacing: 4,
+              color: GOLD,
+              textTransform: "uppercase",
+            }}
+          >
+            Experience Builder
+          </span>
+          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
         </div>
-        <h3
+        <h2
           style={{
             fontFamily: serif,
-            fontSize: 28,
+            fontSize: "clamp(28px, 4vw, 42px)",
+            fontWeight: 300,
             color: OFF_WHITE,
-            margin: "0 0 32px",
-            fontWeight: 400,
+            margin: "0 0 16px",
           }}
         >
-          Tell Us What You Need
-        </h3>
-        {(["Your Name", "Email", "Phone"] as const).map((placeholder, i) => (
-          <input
-            key={i}
-            placeholder={placeholder}
-            style={{
-              width: "100%",
-              background: "rgba(0,0,0,0.4)",
-              border: "1px solid rgba(245,245,245,0.08)",
-              color: OFF_WHITE,
-              padding: "14px 16px",
-              fontFamily: sans,
-              fontSize: 14,
-              marginBottom: 16,
-              outline: "none",
-              boxSizing: "border-box",
-              transition: "border-color 0.3s",
-            }}
-            onFocus={(e) => (e.target.style.borderColor = "rgba(212,175,55,0.4)")}
-            onBlur={(e) => (e.target.style.borderColor = "rgba(245,245,245,0.08)")}
-          />
-        ))}
-        <select
-          style={{
-            width: "100%",
-            background: "rgba(0,0,0,0.4)",
-            border: "1px solid rgba(245,245,245,0.08)",
-            color: "rgba(245,245,245,0.5)",
-            padding: "14px 16px",
-            fontFamily: sans,
-            fontSize: 14,
-            marginBottom: 16,
-            outline: "none",
-            boxSizing: "border-box",
-            appearance: "none",
-          }}
-        >
-          <option>Select Service</option>
-          <option>Nightlife &amp; VIP Access</option>
-          <option>Luxury Travel</option>
-          <option>Event Production</option>
-          <option>Content &amp; Media</option>
-          <option>Full Concierge</option>
-        </select>
-        <textarea
-          placeholder="Tell us about your vision..."
-          rows={3}
-          style={{
-            width: "100%",
-            background: "rgba(0,0,0,0.4)",
-            border: "1px solid rgba(245,245,245,0.08)",
-            color: OFF_WHITE,
-            padding: "14px 16px",
-            fontFamily: sans,
-            fontSize: 14,
-            resize: "vertical",
-            marginBottom: 24,
-            outline: "none",
-            boxSizing: "border-box",
-          }}
-        />
-        <GoldButton filled style={{ width: "100%", padding: "14px 40px" }}>
-          Submit Inquiry
-        </GoldButton>
+          Three quick picks, one clear brief.
+        </h2>
         <p
           style={{
             fontFamily: sans,
-            fontSize: 11,
-            color: "rgba(245,245,245,0.25)",
-            textAlign: "center",
-            marginTop: 16,
-            letterSpacing: 0.5,
+            fontSize: 14,
+            fontWeight: 300,
+            color: "rgba(239,238,235,0.5)",
+            maxWidth: 560,
+            margin: "0 0 56px",
+            lineHeight: 1.7,
           }}
         >
-          All inquiries are confidential. Response within 24 hours.
+          Pick the occasion, the group size and what matters most — we
+          carry it straight into your request.
         </p>
+      </FadeSection>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1.3fr 1fr",
+          gap: "clamp(32px, 5vw, 64px)",
+        }}
+        className="builder-grid"
+      >
+        <FadeSection delay={0.1}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+            <div>
+              <div style={{ fontFamily: sans, fontSize: 10, letterSpacing: 3, color: WARM, textTransform: "uppercase", marginBottom: 14 }}>
+                01 — The Occasion
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 8 }}>
+                {EXPERIENCES.map((e) => (
+                  <button key={e.slug} type="button" style={pillStyle(occasion === e.slug)} onClick={() => setOccasion(e.slug)}>
+                    {e.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div style={{ fontFamily: sans, fontSize: 10, letterSpacing: 3, color: WARM, textTransform: "uppercase", marginBottom: 14 }}>
+                02 — Group Size
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {BUILDER_GROUP_SIZES.map((s) => (
+                  <button key={s} type="button" style={pillStyle(size === s)} onClick={() => setSize(s)}>
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div style={{ fontFamily: sans, fontSize: 10, letterSpacing: 3, color: WARM, textTransform: "uppercase", marginBottom: 14 }}>
+                03 — What Matters Most
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 8 }}>
+                {SERVICES.map((s) => (
+                  <button key={s.slug} type="button" style={pillStyle(focus.includes(s.slug))} onClick={() => toggleFocus(s.slug)}>
+                    {s.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </FadeSection>
+
+        <FadeSection delay={0.2}>
+          <div
+            style={{
+              background: "rgba(255,255,255,0.02)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              padding: "clamp(24px,3vw,36px)",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div style={{ fontFamily: sans, fontSize: 10, letterSpacing: 3, color: WARM, textTransform: "uppercase", marginBottom: 20 }}>
+              Your Brief
+            </div>
+            <p
+              style={{
+                fontFamily: serif,
+                fontSize: 22,
+                fontWeight: 300,
+                color: OFF_WHITE,
+                lineHeight: 1.5,
+                margin: 0,
+              }}
+            >
+              {occasionName} in Chicago for {size}
+              {focusNames.length > 0 && (
+                <>
+                  , centered on <span style={{ color: GOLD, fontStyle: "italic" }}>{focusNames.join(", ")}</span>
+                </>
+              )}
+              .
+            </p>
+            <div style={{ flex: 1 }} />
+            <p style={{ fontFamily: sans, fontSize: 12, color: "rgba(239,238,235,0.4)", lineHeight: 1.6, margin: "24px 0" }}>
+              We&rsquo;ll carry this straight into your request — you&rsquo;ll
+              just need to add dates and how to reach you.
+            </p>
+            <button
+              type="button"
+              onClick={() =>
+                router.push(
+                  `/start?package=${occasion}&size=${encodeURIComponent(size)}&focus=${focus.join(",")}`
+                )
+              }
+              style={{
+                background: GOLD,
+                color: BLACK,
+                border: "none",
+                padding: "14px 24px",
+                fontFamily: sans,
+                fontSize: 12,
+                fontWeight: 500,
+                letterSpacing: 1.5,
+                textTransform: "uppercase",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              Continue With This Brief
+              <span>→</span>
+            </button>
+          </div>
+        </FadeSection>
       </div>
-      <style>{`@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }`}</style>
-    </div>
+    </section>
+  );
+}
+
+// ─── Services preview ───
+function ServicesPreview() {
+  return (
+    <section style={{ padding: "0 clamp(24px,5vw,80px) 120px", maxWidth: 1200, margin: "0 auto" }}>
+      <FadeSection>
+        <div style={{ textAlign: "center", marginBottom: 64 }}>
+          <div style={{ fontFamily: sans, fontSize: 10, fontWeight: 300, letterSpacing: 5, color: WARM, textTransform: "uppercase", marginBottom: 16 }}>
+            Services
+          </div>
+          <h2 style={{ fontFamily: serif, fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 300, color: OFF_WHITE, margin: 0 }}>
+            What We Coordinate
+          </h2>
+        </div>
+      </FadeSection>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          border: "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
+        {SERVICES.map((s, i) => (
+          <div
+            key={s.slug}
+            style={{
+              padding: "32px 28px",
+              borderRight: "1px solid rgba(255,255,255,0.08)",
+              borderBottom: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <div style={{ fontFamily: serif, fontSize: 13, color: GOLD, opacity: 0.6, marginBottom: 12 }}>
+              {String(i + 1).padStart(2, "0")}
+            </div>
+            <h3 style={{ fontFamily: serif, fontSize: 19, fontWeight: 400, color: OFF_WHITE, margin: "0 0 10px" }}>
+              {s.name}
+            </h3>
+            <p style={{ fontFamily: sans, fontSize: 13, fontWeight: 300, color: "rgba(239,238,235,0.45)", lineHeight: 1.7, margin: 0 }}>
+              {s.description}
+            </p>
+          </div>
+        ))}
+      </div>
+      <FadeSection>
+        <div style={{ textAlign: "center", marginTop: 48 }}>
+          <GoldButton href="/services" style={{ borderColor: "rgba(255,255,255,0.14)", color: "rgba(239,238,235,0.7)" }}>
+            View Full Service Detail
+          </GoldButton>
+        </div>
+      </FadeSection>
+    </section>
+  );
+}
+
+// ─── Featured itinerary ───
+const ITINERARY_DAYS = [
+  {
+    day: "Friday",
+    photo: "https://images.unsplash.com/photo-1648239131154-3eb89b31c944",
+    items: [
+      "Private SUV pickup timed to your flight",
+      "Early check-in already arranged",
+      "A dinner reservation to start the weekend right",
+      "A rooftop nightcap to close out the night",
+    ],
+  },
+  {
+    day: "Saturday",
+    photo: "https://images.unsplash.com/photo-1515963665762-77ef90e624fa",
+    items: [
+      "Group brunch, no reservations to manage",
+      "An afternoon activity picked around your group",
+      "A chef-driven dinner",
+      "Evening plans with transportation handled between stops",
+    ],
+  },
+  {
+    day: "Sunday",
+    photo: "https://images.unsplash.com/photo-1669629711648-83248e727c4c",
+    items: [
+      "A relaxed brunch before heading out",
+      "A personalized city experience built into the morning",
+      "A private car straight to the airport",
+    ],
+  },
+];
+
+function FeaturedItinerary() {
+  return (
+    <section style={{ padding: "120px clamp(24px,5vw,80px)", maxWidth: 1200, margin: "0 auto" }}>
+      <FadeSection>
+        <div style={{ textAlign: "center", marginBottom: 64 }}>
+          <div style={{ fontFamily: sans, fontSize: 10, fontWeight: 300, letterSpacing: 5, color: WARM, textTransform: "uppercase", marginBottom: 16 }}>
+            Featured Itinerary
+          </div>
+          <h2 style={{ fontFamily: serif, fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 300, color: OFF_WHITE, margin: "0 0 16px" }}>
+            A Sample Chicago Weekend
+          </h2>
+          <p style={{ fontFamily: sans, fontSize: 14, fontWeight: 300, color: "rgba(239,238,235,0.5)", maxWidth: 560, margin: "0 auto" }}>
+            Here&rsquo;s what a three-day Chicago weekend can look like when
+            we build it end to end. Everything shown here can change.
+          </p>
+        </div>
+      </FadeSection>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
+        {ITINERARY_DAYS.map((d, i) => (
+          <FadeSection key={d.day} delay={i * 0.12}>
+            <div style={{ border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div style={{ position: "relative", height: 200 }}>
+                <Image
+                  src={`${d.photo}?q=75&w=700&auto=format&fit=crop`}
+                  alt={`${d.day} in Chicago`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: "cover" }}
+                />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(4,4,5,0.4), transparent 60%)" }} />
+                <span
+                  style={{
+                    position: "absolute",
+                    top: 16,
+                    left: 16,
+                    fontFamily: sans,
+                    fontSize: 10,
+                    letterSpacing: 2,
+                    color: GOLD,
+                    background: "rgba(4,4,5,0.6)",
+                    padding: "4px 10px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")} — {d.day}
+                </span>
+              </div>
+              <div style={{ padding: "24px 24px 28px" }}>
+                <ol style={{ margin: 0, padding: 0, listStyle: "none" }}>
+                  {d.items.map((item, j) => (
+                    <li
+                      key={item}
+                      style={{
+                        display: "flex",
+                        gap: 10,
+                        fontFamily: sans,
+                        fontSize: 13,
+                        fontWeight: 300,
+                        color: "rgba(239,238,235,0.6)",
+                        lineHeight: 1.6,
+                        marginBottom: j === d.items.length - 1 ? 0 : 12,
+                      }}
+                    >
+                      <span style={{ color: GOLD, flexShrink: 0 }}>{String(j + 1).padStart(2, "0")}</span>
+                      {item}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </FadeSection>
+        ))}
+      </div>
+      <FadeSection>
+        <p
+          style={{
+            fontFamily: sans,
+            fontSize: 12,
+            color: "rgba(239,238,235,0.35)",
+            textAlign: "center",
+            maxWidth: 620,
+            margin: "40px auto 0",
+            lineHeight: 1.7,
+          }}
+        >
+          Shown for illustration only — every detail here can be swapped,
+          reordered or dropped. All bookings remain subject to availability
+          and venue policies.
+        </p>
+      </FadeSection>
+    </section>
   );
 }
 
 // ─── Page ───
 export default function HomePage() {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <div style={{ background: BLACK, color: OFF_WHITE, minHeight: "100vh", overflowX: "hidden" }}>
-      <Hero onInquiry={() => setModalOpen(true)} />
+      <Hero />
+
+      {/* Intro strip */}
+      <FadeSection>
+        <div
+          style={{
+            padding: "80px clamp(24px,5vw,80px) 0",
+            maxWidth: 760,
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: serif,
+              fontSize: "clamp(22px, 3vw, 30px)",
+              fontWeight: 400,
+              color: OFF_WHITE,
+              lineHeight: 1.5,
+              margin: 0,
+            }}
+          >
+            One city. One point of contact.{" "}
+            <span style={{ color: GOLD, fontStyle: "italic" }}>
+              Every detail handled.
+            </span>
+          </h2>
+          <p
+            style={{
+              fontFamily: sans,
+              fontSize: 14,
+              fontWeight: 300,
+              color: "rgba(245,245,245,0.45)",
+              maxWidth: 560,
+              margin: "24px auto 0",
+              lineHeight: 1.8,
+            }}
+          >
+            MICC Hospitality coordinates each part of your Chicago experience
+            through a trusted local network — accommodations, reservations,
+            transportation, entertainment and the schedule that holds it
+            together. You speak with one team, and the planning,
+            confirmations and day-to-day logistics are managed on your
+            behalf.
+          </p>
+        </div>
+      </FadeSection>
 
       {/* Experiences */}
       <section
@@ -964,7 +1242,7 @@ export default function HomePage() {
                 marginBottom: 16,
               }}
             >
-              What We Curate
+              Experiences
             </div>
             <h2
               style={{
@@ -975,7 +1253,7 @@ export default function HomePage() {
                 margin: 0,
               }}
             >
-              Featured Experiences
+              Planned Around the Reason You&apos;re Here
             </h2>
             <div style={{ marginTop: 24 }}>
               <GoldLine />
@@ -994,6 +1272,10 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <ExperienceBuilder />
+
+      <ServicesPreview />
 
       <StatBar />
 
@@ -1015,7 +1297,7 @@ export default function HomePage() {
                 marginBottom: 16,
               }}
             >
-              The Foundation
+              Why MICC
             </div>
             <h2
               style={{
@@ -1026,7 +1308,7 @@ export default function HomePage() {
                 margin: 0,
               }}
             >
-              Our Pillars
+              Access, Coordination and Judgment
             </h2>
             <div style={{ marginTop: 24 }}>
               <GoldLine />
@@ -1036,7 +1318,148 @@ export default function HomePage() {
         {pillars.map((p, i) => (
           <PillarRow key={i} item={p} index={i} />
         ))}
+        <FadeSection>
+          <p
+            style={{
+              fontFamily: sans,
+              fontSize: 12,
+              color: "rgba(239,238,235,0.35)",
+              textAlign: "center",
+              maxWidth: 640,
+              margin: "48px auto 0",
+              lineHeight: 1.7,
+            }}
+          >
+            Every booking depends on availability, venue policy, capacity,
+            ID and age requirements, and management approval — nothing is
+            guaranteed until a reservation is actually confirmed.
+          </p>
+        </FadeSection>
       </section>
+
+      {/* How It Works — summary */}
+      <section style={{ padding: "0 clamp(24px,5vw,80px) 120px", maxWidth: 1100, margin: "0 auto" }}>
+        <FadeSection>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <div
+              style={{
+                fontFamily: sans,
+                fontSize: 10,
+                fontWeight: 300,
+                letterSpacing: 5,
+                color: WARM,
+                textTransform: "uppercase",
+                marginBottom: 16,
+              }}
+            >
+              How It Works
+            </div>
+            <h2
+              style={{
+                fontFamily: serif,
+                fontSize: "clamp(28px, 4vw, 40px)",
+                fontWeight: 400,
+                color: OFF_WHITE,
+                margin: 0,
+              }}
+            >
+              Four Steps, Start to Finish
+            </h2>
+          </div>
+        </FadeSection>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: 32,
+          }}
+        >
+          {[
+            { num: "01", title: "Tell Us About Your Trip", desc: "Share the dates, group size, preferences, budget and the type of experience you have in mind." },
+            { num: "02", title: "We Design the Experience", desc: "We create a personalized plan using our Chicago hospitality network and the priorities you gave us." },
+            { num: "03", title: "Review and Confirm", desc: "You review the proposed itinerary, pricing and included services, and we adjust until it's right." },
+            { num: "04", title: "Arrive and Enjoy", desc: "We coordinate the details so your group can focus on the experience rather than the logistics." },
+          ].map((step, i) => (
+            <FadeSection key={step.num} delay={i * 0.1}>
+              <div>
+                <div style={{ fontFamily: serif, fontSize: 32, color: GOLD, opacity: 0.5, marginBottom: 12 }}>
+                  {step.num}
+                </div>
+                <h3 style={{ fontFamily: serif, fontSize: 19, fontWeight: 500, color: OFF_WHITE, margin: "0 0 10px" }}>
+                  {step.title}
+                </h3>
+                <p style={{ fontFamily: sans, fontSize: 13, fontWeight: 300, color: "rgba(245,245,245,0.45)", lineHeight: 1.7, margin: 0 }}>
+                  {step.desc}
+                </p>
+              </div>
+            </FadeSection>
+          ))}
+        </div>
+        <FadeSection>
+          <div style={{ textAlign: "center", marginTop: 56 }}>
+            <GoldButton href="/how-it-works" style={{ borderColor: "rgba(245,245,245,0.2)", color: "rgba(245,245,245,0.7)" }}>
+              See the Full Process
+            </GoldButton>
+          </div>
+        </FadeSection>
+      </section>
+
+      <FeaturedItinerary />
+
+      {/* Neighborhoods */}
+      <FadeSection>
+        <div
+          style={{
+            padding: "0 clamp(24px,5vw,80px) 120px",
+            maxWidth: 900,
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: sans,
+              fontSize: 10,
+              fontWeight: 300,
+              letterSpacing: 5,
+              color: WARM,
+              textTransform: "uppercase",
+              marginBottom: 20,
+            }}
+          >
+            The City
+          </div>
+          <h2
+            style={{
+              fontFamily: serif,
+              fontSize: "clamp(24px, 3.5vw, 36px)",
+              fontWeight: 400,
+              color: OFF_WHITE,
+              margin: "0 0 32px",
+            }}
+          >
+            Chicago, Mapped to Your Itinerary
+          </h2>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+            {NEIGHBORHOODS.map((n) => (
+              <span
+                key={n}
+                style={{
+                  fontFamily: sans,
+                  fontSize: 11,
+                  letterSpacing: 2,
+                  textTransform: "uppercase",
+                  color: "rgba(245,245,245,0.55)",
+                  border: "1px solid rgba(245,245,245,0.1)",
+                  padding: "8px 18px",
+                }}
+              >
+                {n}
+              </span>
+            ))}
+          </div>
+        </div>
+      </FadeSection>
 
       {/* Testimonials */}
       <section style={{ padding: "120px 24px", maxWidth: 1200, margin: "0 auto" }}>
@@ -1076,7 +1499,10 @@ export default function HomePage() {
         <MembershipCTA />
       </section>
 
-      <InquiryModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <PhotoCtaBand
+        heading="Your Chicago experience starts here."
+        body="Tell us what you're planning. We'll take care of the details."
+      />
 
       {/* Sticky inquiry bar */}
       <div
@@ -1105,10 +1531,10 @@ export default function HomePage() {
             letterSpacing: 1,
           }}
         >
-          Ready for something extraordinary?
+          Your Chicago experience starts here.
         </span>
-        <GoldButton onClick={() => setModalOpen(true)} style={{ padding: "10px 32px", fontSize: 11 }}>
-          Curated Access Awaits
+        <GoldButton href="/start" style={{ padding: "10px 32px", fontSize: 11 }}>
+          Start Planning
         </GoldButton>
       </div>
     </div>

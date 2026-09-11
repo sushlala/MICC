@@ -16,35 +16,44 @@ export function MembershipHero({
 }: MembershipHeroProps) {
   return (
     <section
-      className="relative pt-40 pb-20 overflow-hidden"
+      className="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden"
       aria-label="Membership"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--color-gold)_0%,_transparent_70%)] opacity-[0.06]" />
-      <Container className="relative z-10 text-center">
-        <motion.p
-          className="text-gold text-sm font-medium tracking-[0.3em] uppercase mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-        >
-          {eyebrow}
-        </motion.p>
-        <motion.h1
-          className="font-display text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-        >
-          {headline}
-        </motion.h1>
-        <motion.p
-          className="text-lg text-dark-muted max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          {subheadline}
-        </motion.p>
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+        }}
+      />
+      <Container className="relative z-10">
+        <div className="max-w-3xl">
+          <motion.p
+            className="text-gold text-xs font-medium tracking-[0.2em] uppercase mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            {eyebrow}
+          </motion.p>
+          <motion.h1
+            className="font-display text-4xl sm:text-5xl lg:text-6xl font-light leading-[1.1] mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            {headline}
+          </motion.h1>
+          <motion.p
+            className="text-dark-muted text-lg max-w-xl leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
+            {subheadline}
+          </motion.p>
+        </div>
       </Container>
     </section>
   );

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { BUDGET_RANGES, PILLARS, VIBE_TAGS } from "@/lib/constants";
+import { BUDGET_RANGES, SERVICES, VIBE_TAGS } from "@/lib/constants";
 
 const spec = {
   openapi: "3.1.0",
@@ -7,7 +7,7 @@ const spec = {
     title: "MICC Hospitality API",
     version: "0.1.0",
     description:
-      "API for MICC — a premium concierge platform for luxury event production in Los Angeles.",
+      "API for MICC — a private concierge platform for trip planning in Chicago.",
   },
   paths: {
     "/api/request": {
@@ -73,7 +73,7 @@ const spec = {
                     type: "array",
                     items: {
                       type: "string",
-                      enum: PILLARS.map((p) => p.slug),
+                      enum: SERVICES.map((p) => p.slug),
                     },
                     minItems: 1,
                     description: "Selected service pillars",

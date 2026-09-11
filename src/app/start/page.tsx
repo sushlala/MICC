@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-
-const SMS_HREF = "sms:+1XXXXXXXXXX";
-const WHATSAPP_HREF = "https://wa.me/1XXXXXXXXXX";
+import { BUDGET_RANGES, EXPERIENCES } from "@/lib/constants";
 
 /* ── Types ── */
 type FormData = {
@@ -59,14 +57,21 @@ const INITIAL: FormData = {
 };
 
 /* ── Option data ── */
-const EVENT_TYPES = [
-  { id: "night-out", icon: "🌙", label: "A Night Out", desc: "Tables, clubs, bars, nightlife" },
-  { id: "private-event", icon: "🎉", label: "A Private Event", desc: "Corporate, private party, launch" },
-  { id: "weekend", icon: "✈️", label: "A Weekend", desc: "Multi-day itinerary, travel" },
-  { id: "ongoing", icon: "🎯", label: "Ongoing Concierge", desc: "Recurring weekly/monthly service" },
-  { id: "birthday", icon: "🎂", label: "A Birthday", desc: "Birthday dinner, party, full weekend" },
-  { id: "other", icon: "💭", label: "Not Sure Yet", desc: "Let's figure it out together" },
-];
+const EVENT_TYPE_ICONS: Record<string, string> = {
+  "bachelor-bachelorette-weekends": "🥂",
+  "luxury-chicago-getaways": "🌆",
+  "birthdays-celebrations": "🎂",
+  "corporate-hospitality": "💼",
+  "nightlife-vip-access": "🌙",
+  "custom-group-experiences": "💭",
+};
+
+const EVENT_TYPES = EXPERIENCES.map((e) => ({
+  id: e.slug,
+  icon: EVENT_TYPE_ICONS[e.slug] ?? "✦",
+  label: e.name,
+  desc: e.tagline,
+}));
 
 const GROUP_SIZES = [
   { id: "1-5", label: "1–5" },
@@ -75,14 +80,10 @@ const GROUP_SIZES = [
   { id: "30+", label: "30+" },
 ];
 
-const BUDGETS = [
-  { id: "skip", label: "Prefer not to say" },
-  { id: "under-500", label: "Under $500" },
-  { id: "500-2k", label: "$500 – $2,000" },
-  { id: "2k-5k", label: "$2,000 – $5,000" },
-  { id: "5k-10k", label: "$5,000 – $10,000" },
-  { id: "10k+", label: "$10,000+" },
-];
+const BUDGETS = BUDGET_RANGES.map((b) => ({
+  id: b.label,
+  label: b.label,
+}));
 
 const VIBE_OPTIONS = [
   "Upscale", "High-Energy", "Chill & Lounge", "Intimate",
@@ -91,14 +92,13 @@ const VIBE_OPTIONS = [
 ];
 
 const EXTRAS = [
-  { id: "dj", label: "DJ / Music" },
-  { id: "photo-video", label: "Photo & Video" },
-  { id: "lighting", label: "Lighting & Production" },
-  { id: "transport", label: "Private Transportation" },
-  { id: "catering", label: "Catering / F&B" },
-  { id: "decor", label: "Decor & Florals" },
-  { id: "security", label: "Security" },
-  { id: "staffing", label: "Event Staffing" },
+  { id: "hotel", label: "Hotel / Accommodations" },
+  { id: "dining", label: "Dining Reservations" },
+  { id: "nightlife", label: "Nightlife & VIP Tables" },
+  { id: "transport", label: "Transportation & Chauffeurs" },
+  { id: "events", label: "Events, Concerts & Sports" },
+  { id: "private", label: "Private Experiences" },
+  { id: "itinerary", label: "Complete Itinerary" },
 ];
 
 const AGE_RANGES = [
@@ -144,22 +144,35 @@ const AVAILABILITY = [
 ];
 
 /* ── Shared sub-components ── */
-function StepDots({ current, total }: { current: number; total: number }) {
+const STEP_LABELS = ["Contact Information", "What You're Planning", "Trip Details", "About You & Notes"];
+
+function ProgressBar({ current, total }: { current: number; total: number }) {
   return (
-    <div className="flex items-center justify-center gap-3 mb-2">
-      {Array.from({ length: total }, (_, i) => (
+    <div className="mb-10">
+      <div className="flex items-baseline justify-between mb-3">
+        <span
+          className="font-sans"
+          style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "var(--beige)", textTransform: "uppercase" }}
+        >
+          Step {current} — {STEP_LABELS[current - 1]}
+        </span>
+        <span
+          className="font-sans"
+          style={{ fontSize: "0.7rem", letterSpacing: "0.1em", color: "rgba(245, 240, 232, 0.4)" }}
+        >
+          {current}/{total}
+        </span>
+      </div>
+      <div style={{ height: 1, background: "rgba(255,255,255,0.1)", width: "100%" }}>
         <div
-          key={i}
           style={{
-            width: i + 1 === current ? 28 : 10,
-            height: 10,
-            borderRadius: 5,
-            background: i + 1 <= current ? "var(--beige)" : "transparent",
-            border: i + 1 <= current ? "none" : "1.5px solid var(--charcoal)",
-            transition: "all 0.3s ease",
+            height: 1,
+            background: "var(--beige)",
+            width: `${(current / total) * 100}%`,
+            transition: "width 0.4s cubic-bezier(.23,1,.32,1)",
           }}
         />
-      ))}
+      </div>
     </div>
   );
 }
@@ -168,11 +181,11 @@ function FieldLabel({ children, optional }: { children: ReactNode; optional?: bo
   return (
     <label
       className="font-sans block mb-2"
-      style={{ fontSize: "0.85rem", color: "var(--cream)", fontWeight: 400, letterSpacing: "0.03em" }}
+      style={{ fontSize: "0.7rem", color: "var(--beige)", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" }}
     >
       {children}
       {optional && (
-        <span style={{ color: "rgba(245, 240, 232, 0.4)", fontWeight: 300, marginLeft: 6 }}>
+        <span style={{ color: "rgba(245, 240, 232, 0.35)", fontWeight: 400, letterSpacing: "0.03em", textTransform: "none", marginLeft: 6 }}>
           optional
         </span>
       )}
@@ -200,18 +213,18 @@ function TextInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       required={required}
-      className="font-sans w-full outline-none"
+      className="font-sans w-full outline-none bg-transparent"
       style={{
-        background: "var(--charcoal)",
         color: "var(--cream)",
-        border: "1px solid rgba(201, 169, 110, 0.15)",
-        borderRadius: 2,
-        padding: "12px 16px",
-        fontSize: "0.95rem",
+        border: "none",
+        borderBottom: "1px solid rgba(255,255,255,0.12)",
+        borderRadius: 0,
+        padding: "8px 0",
+        fontSize: "1rem",
         transition: "border-color 0.2s ease",
       }}
-      onFocus={(e) => (e.target.style.borderColor = "var(--beige)")}
-      onBlur={(e) => (e.target.style.borderColor = "rgba(201, 169, 110, 0.15)")}
+      onFocus={(e) => (e.target.style.borderBottomColor = "var(--beige)")}
+      onBlur={(e) => (e.target.style.borderBottomColor = "rgba(255,255,255,0.12)")}
     />
   );
 }
@@ -222,26 +235,54 @@ function TextInput({
 export default function StartPage() {
   const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
-  const [form, setForm] = useState<FormData>(INITIAL);
+  // Pre-populate from URL ?package=<slug>&size=...&focus=a,b,c (Experience Builder / package links)
+  const [form, setForm] = useState<FormData>(() => {
+    const pkg = searchParams.get("package");
+    const legacyMap: Record<string, string> = {
+      "night-out": "nightlife-vip-access",
+      weekend: "luxury-chicago-getaways",
+      production: "custom-group-experiences",
+      birthday: "birthdays-celebrations",
+      bachelor: "bachelor-bachelorette-weekends",
+      corporate: "corporate-hospitality",
+    };
+    const validSlugs = EXPERIENCES.map((e) => e.slug);
+    const eventType = pkg
+      ? legacyMap[pkg] ?? (validSlugs.includes(pkg) ? pkg : "")
+      : "";
+
+    const sizeParam = searchParams.get("size");
+    const builderSizeMap: Record<string, string> = {
+      "2 guests": "1-5",
+      "4–6": "1-5",
+      "8–12": "6-15",
+      "12–20": "16-30",
+      "20+": "30+",
+    };
+    const groupSize = sizeParam ? builderSizeMap[sizeParam] ?? "" : "";
+
+    const focusParam = searchParams.get("focus");
+    const serviceSlugToExtraId: Record<string, string> = {
+      "hotels-accommodations": "hotel",
+      "dining-reservations": "dining",
+      "nightlife-vip-tables": "nightlife",
+      "transportation-chauffeurs": "transport",
+      "events-concerts-sports": "events",
+      "private-experiences": "private",
+      "complete-itinerary-planning": "itinerary",
+    };
+    const extras = focusParam
+      ? focusParam
+          .split(",")
+          .map((slug) => serviceSlugToExtraId[slug])
+          .filter((id): id is string => Boolean(id))
+      : [];
+
+    if (!eventType && !groupSize && extras.length === 0) return INITIAL;
+    return { ...INITIAL, eventType, groupSize, extras };
+  });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-
-  // Pre-populate from URL ?package=night-out etc.
-  useEffect(() => {
-    const pkg = searchParams.get("package");
-    if (pkg) {
-      const map: Record<string, string> = {
-        "night-out": "night-out",
-        weekend: "weekend",
-        production: "private-event",
-        birthday: "birthday",
-        ongoing: "ongoing",
-      };
-      if (map[pkg]) {
-        setForm((prev) => ({ ...prev, eventType: map[pkg] }));
-      }
-    }
-  }, [searchParams]);
 
   function update<K extends keyof FormData>(key: K, val: FormData[K]) {
     setForm((prev) => ({ ...prev, [key]: val }));
@@ -255,9 +296,9 @@ export default function StartPage() {
   }
 
   function canAdvance(): boolean {
-    if (step === 1) return !!form.eventType;
-    if (step === 2) return !!form.groupSize && !!form.city;
-    if (step === 3) return !!form.firstName && !!form.lastName && !!form.phone;
+    if (step === 1) return !!form.firstName && !!form.lastName && !!form.phone;
+    if (step === 2) return !!form.eventType;
+    if (step === 3) return !!form.groupSize && !!form.city;
     if (step === 4) return true;
     return false;
   }
@@ -310,10 +351,10 @@ export default function StartPage() {
         dangerouslySetInnerHTML={{
           __html: `
             .intake-card-select {
-              background: var(--charcoal);
-              border: 1px solid transparent;
+              background: transparent;
+              border: 1px solid rgba(255,255,255,0.1);
               padding: 1.25rem 1.5rem;
-              border-radius: 4px;
+              border-radius: 2px;
               cursor: pointer;
               transition: all 0.2s ease;
               text-align: left;
@@ -324,15 +365,17 @@ export default function StartPage() {
             }
             .intake-card-select.selected {
               border-color: var(--beige);
-              background: rgba(201, 169, 110, 0.08);
+              background: rgba(201, 169, 110, 0.06);
             }
             .intake-pill {
               padding: 8px 18px;
-              border-radius: 20px;
-              border: 1px solid rgba(201, 169, 110, 0.2);
+              border-radius: 2px;
+              border: 1px solid rgba(255,255,255,0.12);
               background: transparent;
               color: rgba(245, 240, 232, 0.7);
-              font-size: 0.85rem;
+              font-size: 0.75rem;
+              letter-spacing: 0.05em;
+              text-transform: uppercase;
               cursor: pointer;
               transition: all 0.2s ease;
             }
@@ -349,10 +392,12 @@ export default function StartPage() {
             .intake-radio {
               padding: 10px 20px;
               border-radius: 2px;
-              border: 1px solid rgba(201, 169, 110, 0.15);
-              background: var(--charcoal);
+              border: 1px solid rgba(255,255,255,0.12);
+              background: transparent;
               color: rgba(245, 240, 232, 0.7);
-              font-size: 0.9rem;
+              font-size: 0.75rem;
+              letter-spacing: 0.05em;
+              text-transform: uppercase;
               cursor: pointer;
               transition: all 0.2s ease;
               text-align: center;
@@ -362,8 +407,8 @@ export default function StartPage() {
             }
             .intake-radio.selected {
               border-color: var(--beige);
-              background: rgba(201, 169, 110, 0.08);
-              color: var(--cream);
+              background: rgba(201, 169, 110, 0.06);
+              color: var(--beige);
             }
             .step-enter {
               animation: stepFadeIn 0.35s ease forwards;
@@ -377,60 +422,44 @@ export default function StartPage() {
       />
 
       {/* ── SECTION 1: HERO ── */}
-      <section style={{ background: "var(--navy)", paddingTop: 120, paddingBottom: 40 }}>
+      <section className="relative overflow-hidden" style={{ background: "var(--navy)", paddingTop: 128, paddingBottom: 56 }}>
         <div
-          className="mx-auto text-center"
-          style={{ maxWidth: 640, padding: "0 var(--container-pad)" }}
+          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
+          }}
+        />
+        <div
+          className="mx-auto relative"
+          style={{ maxWidth: 680, padding: "0 var(--container-pad)" }}
         >
+          <p
+            className="font-sans mb-5"
+            style={{ fontSize: "0.7rem", letterSpacing: "0.2em", color: "var(--beige)", textTransform: "uppercase" }}
+          >
+            Plan Your Experience
+          </p>
           <h1
             className="font-display"
-            style={{ color: "var(--cream)", fontWeight: 400, fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
+            style={{ color: "var(--cream)", fontWeight: 300, fontSize: "clamp(2.25rem, 5.5vw, 4rem)", lineHeight: 1.1 }}
           >
-            Let&rsquo;s Build Your Night.
+            Where should we start?
           </h1>
           <p
-            className="font-sans mt-3"
-            style={{ color: "rgba(245, 240, 232, 0.65)", fontSize: "1.05rem", lineHeight: 1.6 }}
+            className="font-sans mt-5"
+            style={{ color: "rgba(245, 240, 232, 0.6)", fontSize: "1.05rem", lineHeight: 1.7, maxWidth: 560 }}
           >
-            Tell us what you have in mind. We&rsquo;ll respond within 15 minutes.
+            Just enough to get moving — we&rsquo;ll refine every detail
+            together once we&rsquo;re talking.
           </p>
-
-          {/* Contact shortcut buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
-            <a href={SMS_HREF} className="btn-primary" style={{ fontSize: "0.85rem" }}>
-              📱&nbsp; Text Us
-            </a>
-            <a href={WHATSAPP_HREF} className="btn-ghost" style={{ fontSize: "0.85rem" }}>
-              💬&nbsp; WhatsApp Us
-            </a>
-          </div>
-
-          {/* Divider */}
-          <div className="flex items-center justify-center gap-4 mt-10 mb-2">
-            <div style={{ width: 60, height: 1, background: "var(--beige)", opacity: 0.3 }} />
-            <span
-              className="font-sans"
-              style={{ fontSize: "0.8rem", color: "rgba(245, 240, 232, 0.4)", whiteSpace: "nowrap" }}
-            >
-              or fill out the form below
-            </span>
-            <div style={{ width: 60, height: 1, background: "var(--beige)", opacity: 0.3 }} />
-          </div>
         </div>
       </section>
 
       {/* ── SECTION 2: MULTI-STEP FORM ── */}
-      <section style={{ background: "var(--charcoal)", padding: "60px var(--container-pad) 80px" }}>
-        <div
-          className="mx-auto"
-          style={{
-            maxWidth: 640,
-            background: "var(--navy)",
-            padding: "clamp(2rem, 5vw, 3rem)",
-            borderRadius: 8,
-            border: "1px solid rgba(201, 169, 110, 0.2)",
-          }}
-        >
+      <section style={{ background: "var(--navy)", padding: "0 var(--container-pad) 100px" }}>
+        <div className="mx-auto" style={{ maxWidth: 680 }}>
           {submitted ? (
             /* ── SUCCESS STATE ── */
             <div className="text-center step-enter" style={{ padding: "2rem 0" }}>
@@ -476,21 +505,99 @@ export default function StartPage() {
             </div>
           ) : (
             <>
-              {/* Progress */}
-              <div className="mb-8">
-                <StepDots current={step} total={4} />
-                <p
-                  className="font-sans text-center mt-2"
-                  style={{ fontSize: "0.8rem", color: "var(--beige)", letterSpacing: "0.05em" }}
-                >
-                  Step {step} of 4
-                </p>
-              </div>
+              <ProgressBar current={step} total={4} />
 
-              {/* ── STEP 1 ── */}
+              {/* ── STEP 1: CONTACT INFO ── */}
               {step === 1 && (
                 <div className="step-enter">
-                  <h3 className="font-display text-center mb-8" style={{ color: "var(--cream)", fontWeight: 400 }}>
+                  <h3 className="font-display mb-2" style={{ color: "var(--cream)", fontWeight: 400 }}>
+                    Tell us how to reach you
+                  </h3>
+                  <p className="font-sans mb-8" style={{ fontSize: "0.85rem", color: "rgba(245, 240, 232, 0.45)" }}>
+                    A few details are enough to begin.
+                  </p>
+
+                  <div className="space-y-5">
+                    {/* Name row */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <FieldLabel>First name</FieldLabel>
+                        <TextInput
+                          placeholder="First name"
+                          value={form.firstName}
+                          onChange={(v) => update("firstName", v)}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <FieldLabel>Last name</FieldLabel>
+                        <TextInput
+                          placeholder="Last name"
+                          value={form.lastName}
+                          onChange={(v) => update("lastName", v)}
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email + Phone row */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <FieldLabel>Phone number</FieldLabel>
+                        <TextInput
+                          type="tel"
+                          placeholder="(555) 123-4567"
+                          value={form.phone}
+                          onChange={(v) => update("phone", v)}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <FieldLabel optional>Email</FieldLabel>
+                        <TextInput
+                          type="email"
+                          placeholder="you@email.com"
+                          value={form.email}
+                          onChange={(v) => update("email", v)}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Contact method */}
+                    <div>
+                      <FieldLabel>Preferred contact method</FieldLabel>
+                      <div className="grid grid-cols-4 gap-2">
+                        {CONTACT_METHODS.map((cm) => (
+                          <button
+                            key={cm.id}
+                            type="button"
+                            className={`intake-radio font-sans ${form.contactMethod === cm.id ? "selected" : ""}`}
+                            onClick={() => update("contactMethod", cm.id)}
+                          >
+                            {cm.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8">
+                    <button
+                      type="button"
+                      className="btn-primary w-full text-center"
+                      style={{ fontSize: "0.85rem", opacity: canAdvance() ? 1 : 0.4, pointerEvents: canAdvance() ? "auto" : "none" }}
+                      onClick={() => setStep(2)}
+                    >
+                      Continue →
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* ── STEP 2: WHAT ── */}
+              {step === 2 && (
+                <div className="step-enter">
+                  <h3 className="font-display mb-8" style={{ color: "var(--cream)", fontWeight: 400 }}>
                     What are you planning?
                   </h3>
 
@@ -523,12 +630,21 @@ export default function StartPage() {
                     ))}
                   </div>
 
-                  <div className="mt-8">
+                  {/* Nav */}
+                  <div className="flex items-center justify-between mt-8 gap-3">
                     <button
                       type="button"
-                      className="btn-primary w-full text-center"
+                      className="btn-ghost"
+                      style={{ fontSize: "0.8rem", padding: "10px 20px" }}
+                      onClick={() => setStep(1)}
+                    >
+                      ← Back
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-primary flex-1 text-center"
                       style={{ fontSize: "0.85rem", opacity: canAdvance() ? 1 : 0.4, pointerEvents: canAdvance() ? "auto" : "none" }}
-                      onClick={() => setStep(2)}
+                      onClick={() => setStep(3)}
                     >
                       Next →
                     </button>
@@ -536,10 +652,10 @@ export default function StartPage() {
                 </div>
               )}
 
-              {/* ── STEP 2 ── */}
-              {step === 2 && (
+              {/* ── STEP 3: TRIP DETAILS ── */}
+              {step === 3 && (
                 <div className="step-enter">
-                  <h3 className="font-display text-center mb-8" style={{ color: "var(--cream)", fontWeight: 400 }}>
+                  <h3 className="font-display mb-8" style={{ color: "var(--cream)", fontWeight: 400 }}>
                     Tell us the details
                   </h3>
 
@@ -653,7 +769,7 @@ export default function StartPage() {
                       type="button"
                       className="btn-ghost"
                       style={{ fontSize: "0.8rem", padding: "10px 20px" }}
-                      onClick={() => setStep(1)}
+                      onClick={() => setStep(2)}
                     >
                       ← Back
                     </button>
@@ -661,7 +777,7 @@ export default function StartPage() {
                       type="button"
                       className="btn-primary flex-1 text-center"
                       style={{ fontSize: "0.85rem", opacity: canAdvance() ? 1 : 0.4, pointerEvents: canAdvance() ? "auto" : "none" }}
-                      onClick={() => setStep(3)}
+                      onClick={() => setStep(4)}
                     >
                       Next →
                     </button>
@@ -669,65 +785,17 @@ export default function StartPage() {
                 </div>
               )}
 
-              {/* ── STEP 3: ABOUT YOU ── */}
-              {step === 3 && (
+              {/* ── STEP 4: ABOUT YOU & NOTES ── */}
+              {step === 4 && (
                 <div className="step-enter">
-                  <h3 className="font-display text-center mb-2" style={{ color: "var(--cream)", fontWeight: 400 }}>
-                    Tell us about you
+                  <h3 className="font-display mb-2" style={{ color: "var(--cream)", fontWeight: 400 }}>
+                    Almost done
                   </h3>
-                  <p className="font-sans text-center mb-8" style={{ fontSize: "0.85rem", color: "rgba(245, 240, 232, 0.45)" }}>
-                    Helps us personalize the experience.
+                  <p className="font-sans mb-8" style={{ fontSize: "0.85rem", color: "rgba(245, 240, 232, 0.45)" }}>
+                    Last few details so we can get back to you fast.
                   </p>
 
                   <div className="space-y-5">
-                    {/* Name row */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <FieldLabel>First name</FieldLabel>
-                        <TextInput
-                          placeholder="First name"
-                          value={form.firstName}
-                          onChange={(v) => update("firstName", v)}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <FieldLabel>Last name</FieldLabel>
-                        <TextInput
-                          placeholder="Last name"
-                          value={form.lastName}
-                          onChange={(v) => update("lastName", v)}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    {/* Phone */}
-                    <div>
-                      <FieldLabel>Phone number</FieldLabel>
-                      <TextInput
-                        type="tel"
-                        placeholder="(555) 123-4567"
-                        value={form.phone}
-                        onChange={(v) => update("phone", v)}
-                        required
-                      />
-                      <p className="font-sans mt-1" style={{ fontSize: "0.75rem", color: "rgba(245, 240, 232, 0.4)" }}>
-                        We&rsquo;ll text you here — fastest way to get started.
-                      </p>
-                    </div>
-
-                    {/* Email */}
-                    <div>
-                      <FieldLabel optional>Email</FieldLabel>
-                      <TextInput
-                        type="email"
-                        placeholder="you@email.com"
-                        value={form.email}
-                        onChange={(v) => update("email", v)}
-                      />
-                    </div>
-
                     {/* Instagram */}
                     <div>
                       <FieldLabel optional>Instagram handle</FieldLabel>
@@ -808,57 +876,6 @@ export default function StartPage() {
                             onClick={() => update("usedBefore", opt.id)}
                           >
                             {opt.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Nav */}
-                  <div className="flex items-center justify-between mt-8 gap-3">
-                    <button
-                      type="button"
-                      className="btn-ghost"
-                      style={{ fontSize: "0.8rem", padding: "10px 20px" }}
-                      onClick={() => setStep(2)}
-                    >
-                      ← Back
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-primary flex-1 text-center"
-                      style={{ fontSize: "0.85rem", opacity: canAdvance() ? 1 : 0.4, pointerEvents: canAdvance() ? "auto" : "none" }}
-                      onClick={() => setStep(4)}
-                    >
-                      Next →
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* ── STEP 4: WRAP UP ── */}
-              {step === 4 && (
-                <div className="step-enter">
-                  <h3 className="font-display text-center mb-2" style={{ color: "var(--cream)", fontWeight: 400 }}>
-                    Almost done
-                  </h3>
-                  <p className="font-sans text-center mb-8" style={{ fontSize: "0.85rem", color: "rgba(245, 240, 232, 0.45)" }}>
-                    Last few details so we can get back to you fast.
-                  </p>
-
-                  <div className="space-y-5">
-                    {/* Contact method */}
-                    <div>
-                      <FieldLabel>Preferred contact method</FieldLabel>
-                      <div className="grid grid-cols-4 gap-2">
-                        {CONTACT_METHODS.map((cm) => (
-                          <button
-                            key={cm.id}
-                            type="button"
-                            className={`intake-radio font-sans ${form.contactMethod === cm.id ? "selected" : ""}`}
-                            onClick={() => update("contactMethod", cm.id)}
-                          >
-                            {cm.label}
                           </button>
                         ))}
                       </div>
@@ -961,7 +978,7 @@ export default function StartPage() {
         >
           {[
             { icon: "⚡", text: "Response in 15 min" },
-            { icon: "📍", text: "Chicago & SF Based" },
+            { icon: "📍", text: "Chicago Based" },
             { icon: "🔒", text: "Your info stays private" },
           ].map((item) => (
             <div key={item.text}>

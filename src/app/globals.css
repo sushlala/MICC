@@ -2,36 +2,48 @@
 
 /* ── TAILWIND v4 THEME ── */
 @theme inline {
-  --color-background: #0D1B2A;
-  --color-foreground: #F5F0E8;
-  --color-navy: #0D1B2A;
-  --color-charcoal: #2C3E50;
-  --color-beige: #C9A96E;
-  --color-cream: #F5F0E8;
-  --color-navy-80: rgba(13, 27, 42, 0.8);
-  --color-navy-60: rgba(13, 27, 42, 0.6);
-  --color-beige-20: rgba(201, 169, 110, 0.2);
+  --color-background: #040405;
+  --color-foreground: #EFEEEB;
+  --color-navy: #040405;
+  --color-charcoal: #1A1A1A;
+  --color-beige: #E0C38E;
+  --color-cream: #EFEEEB;
+  --color-navy-80: rgba(4, 4, 5, 0.8);
+  --color-navy-60: rgba(4, 4, 5, 0.6);
+  --color-beige-20: rgba(224, 195, 142, 0.2);
+  --color-gold: #E0C38E;
+  --color-gold-light: #EBD6AC;
+  --color-gold-dark: #C7A468;
+  --color-warm: #B89778;
+  --color-dark: #040405;
+  --color-dark-card: rgba(26, 26, 26, 0.65);
+  --color-dark-border: rgba(255, 255, 255, 0.12);
+  --color-dark-muted: rgba(239, 238, 235, 0.5);
   --font-sans: var(--font-dm-sans);
   --font-display: var(--font-cormorant-garamond);
 }
 
-/* ── COLOR TOKENS ── */
+/* ── COLOR TOKENS ──
+   Legacy navy/beige/cream/charcoal names are kept (many components still
+   reference them) but now alias the black/gold palette so the whole site
+   shares one design system. */
 :root {
-  --navy: #0D1B2A;
-  --charcoal: #2C3E50;
-  --beige: #C9A96E;
-  --cream: #F5F0E8;
+  --navy: #040405;
+  --charcoal: #1A1A1A;
+  --beige: #E0C38E;
+  --cream: #EFEEEB;
   --white: #FFFFFF;
-  --navy-80: rgba(13, 27, 42, 0.8);
-  --navy-60: rgba(13, 27, 42, 0.6);
-  --beige-20: rgba(201, 169, 110, 0.2);
+  --navy-80: rgba(4, 4, 5, 0.8);
+  --navy-60: rgba(4, 4, 5, 0.6);
+  --beige-20: rgba(224, 195, 142, 0.2);
 
-  /* New design tokens */
-  --gold: #D4AF37;
+  --gold: #E0C38E;
   --warm: #B89778;
-  --off-white: #F5F5F5;
-  --dark: #000000;
+  --off-white: #EFEEEB;
+  --dark: #040405;
   --dark-card: rgba(26, 26, 26, 0.65);
+  --dark-border: rgba(245, 245, 245, 0.08);
+  --dark-muted: rgba(245, 245, 245, 0.5);
 
   /* ── SPACING ── */
   --section-pad-desktop: 120px;
@@ -46,7 +58,7 @@ html {
 }
 
 body {
-  background: #000;
+  background: var(--dark);
   color: var(--off-white, var(--cream));
   font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 1rem;

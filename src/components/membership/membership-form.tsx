@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { requestFormSchema, type RequestFormData } from "@/lib/validations";
-import { PILLARS, VIBE_TAGS, BUDGET_RANGES } from "@/lib/constants";
+import { SERVICES, VIBE_TAGS, BUDGET_RANGES } from "@/lib/constants";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
@@ -269,7 +269,7 @@ export function MembershipForm() {
                       </p>
                     )}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {PILLARS.map((pillar) => {
+                      {SERVICES.map((pillar) => {
                         const Icon = pillar.icon;
                         const isSelected = selectedPillars?.includes(
                           pillar.slug

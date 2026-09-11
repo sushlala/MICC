@@ -3,15 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { NAV_LINKS } from "@/lib/constants";
 
 const GOLD = "#D4AF37";
 const OFF_WHITE = "#F5F5F5";
 
-const NAV_ITEMS = [
-  { label: "Experiences", href: "/#experiences" },
-  { label: "Pillars", href: "/#pillars" },
-  { label: "Membership", href: "/membership" },
-];
+const NAV_ITEMS = NAV_LINKS;
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -79,7 +76,7 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             {/* Inquire button — desktop */}
             <Link
-              href="/request"
+              href="/start"
               className="hidden md:inline-block font-sans text-[0.7rem] font-medium tracking-[0.2em] uppercase transition-all duration-300 px-7 py-[10px]"
               style={{
                 border: `1px solid ${GOLD}`,
@@ -98,7 +95,7 @@ export function Navbar() {
                 el.style.color = GOLD;
               }}
             >
-              Inquire
+              Plan Your Experience
             </Link>
 
             {/* Hamburger — mobile */}
@@ -170,7 +167,7 @@ export function Navbar() {
             </Link>
           ))}
           <Link
-            href="/request"
+            href="/start"
             className="font-sans text-[0.75rem] tracking-[0.2em] uppercase mt-4 px-10 py-3"
             style={{ border: `1px solid ${GOLD}`, color: GOLD, textDecoration: "none" }}
             onClick={() => setMobileOpen(false)}
