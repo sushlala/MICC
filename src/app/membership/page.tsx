@@ -7,32 +7,32 @@ import { CtaBanner } from "@/components/home/cta-banner";
 export const metadata: Metadata = {
   title: "Membership & Concierge",
   description:
-    "Join MICC for exclusive access to luxury concierge services, VIP event production, and personalized lifestyle management in Los Angeles.",
+    "Join MICC for priority access, a dedicated concierge, and preferred rates on every Chicago trip.",
 };
 
 const BENEFITS = [
   {
     title: "Priority Access",
     description:
-      "Skip the waitlist. Members receive first access to exclusive venues, events, and reservation windows before they open to the public.",
+      "Skip the wait. Members get first access to hotel blocks, tables, and reservation windows before they open to other guests.",
     icon: "Crown",
   },
   {
     title: "Dedicated Concierge",
     description:
-      "Your personal MICC liaison available around the clock. One point of contact who knows your preferences and anticipates your needs.",
+      "The same MICC liaison for every trip — one point of contact who already knows your preferences and how you like to travel.",
     icon: "HeartHandshake",
   },
   {
     title: "Curated Experiences",
     description:
-      "Bespoke events and gatherings designed exclusively for members — from intimate tastings to private performances and VIP nightlife.",
+      "Private Chicago experiences arranged exclusively for members — from chef-driven dinners to private charters and VIP nightlife.",
     icon: "Sparkles",
   },
   {
     title: "Preferred Pricing",
     description:
-      "Members enjoy preferred rates on all MICC packages and priority scheduling for peak-season dates and high-demand venues.",
+      "Members receive preferred rates and priority scheduling for peak dates and high-demand venues across the city.",
     icon: "Star",
   },
   {
@@ -81,8 +81,8 @@ export default function MembershipPage() {
     <>
       <MembershipHero
         eyebrow="Membership & Concierge"
-        headline="The MICC Experience, Elevated"
-        subheadline="Unlock a private tier of service designed for those who expect more — priority access, dedicated support, and experiences crafted exclusively for you."
+        headline="Your Chicago Concierge, On Retainer"
+        subheadline="For guests who visit Chicago often — priority access, a dedicated concierge who already knows you, and preferred rates on every trip."
       />
       <BenefitsGrid
         eyebrow="Why Join"

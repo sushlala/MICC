@@ -34,8 +34,8 @@ export default function ConfirmationPage() {
           <Link href="/">
             <Button variant="secondary">Back to Home</Button>
           </Link>
-          <Link href="/packages">
-            <Button>Explore Packages</Button>
+          <Link href="/services">
+            <Button>Explore Services</Button>
           </Link>
         </div>
       </Container>

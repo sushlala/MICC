@@ -1,43 +1,44 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { DM_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaFloat } from "@/components/layout/cta-float";
 
-const inter = Inter({
-  variable: "--font-inter",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
   display: "swap",
+  weight: ["300", "400", "500", "600"],
 });
 
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair-display",
+const cormorantGaramond = Cormorant_Garamond({
+  variable: "--font-cormorant-garamond",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "700"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "MICC — Curated Luxury, On Demand",
-    template: "%s | MICC",
+    default: "MICC Hospitality — Chicago, Handled.",
+    template: "%s | MICC Hospitality",
   },
   description:
-    "MICC is a premium concierge platform offering luxury event production, media, lighting, and lifestyle management in Los Angeles.",
+    "MICC Hospitality is a private concierge for Chicago — hotels, dining, nightlife, transportation and private experiences, coordinated through one point of contact.",
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "MICC",
-    title: "MICC — Curated Luxury, On Demand",
+    siteName: "MICC Hospitality",
+    title: "MICC Hospitality — Chicago, Handled.",
     description:
-      "MICC is a premium concierge platform offering luxury event production, media, lighting, and lifestyle management in Los Angeles.",
+      "MICC Hospitality is a private concierge for Chicago — hotels, dining, nightlife, transportation and private experiences, coordinated through one point of contact.",
     images: [
       {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "MICC — Curated Luxury, On Demand",
+        alt: "MICC Hospitality — Chicago, Handled.",
       },
     ],
   },
@@ -58,7 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${playfairDisplay.variable} antialiased`}
+        className={`${dmSans.variable} ${cormorantGaramond.variable} antialiased`}
       >
         <a
           href="#main-content"
